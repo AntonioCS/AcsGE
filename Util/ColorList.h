@@ -1,6 +1,7 @@
 #ifndef COLORLIST_H
 #define COLORLIST_H
 
+
 namespace AcsGameEngine::Util {
 
 //From http://cloford.com/resources/colours/500col.htm;
@@ -14,13 +15,21 @@ struct ColorList {
 
         const char* hex;
 
+        //alpha
+        const unsigned int maxAlphaValue{ 255 };
+        unsigned int a{ maxAlphaValue };
+
         bool operator!=(const Color &rhs) const {
             return !(operator==(rhs));
         }
         bool operator==(const Color &rhs) const { 
-            return rhs.r == r && rhs.g == g && rhs.b == b;
+            return rhs.r == r && rhs.g == g && rhs.b == b && rhs.a == a;
         }
-    };    
+
+        void alphaPercentage(unsigned int value) noexcept {
+            a = value * maxAlphaValue / 100;
+        }
+    };
 
     static const Color _nocolor;
 
