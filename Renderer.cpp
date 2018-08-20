@@ -1,5 +1,6 @@
 #include <SDL2/SDL_image.h>
 #include <utility>
+#include <iostream>
 
 #include "Renderer.h"
 #include "Sprite.h"
@@ -19,6 +20,8 @@ Renderer::Renderer(const Window& window, int index, Uint32 flags)
         throw std::runtime_error(std::string{ "Unable to initialize renderer: " }
             + std::string{ SDL_GetError() });
     }
+
+	SDL_SetRenderDrawBlendMode(getRawPointer(), SDL_BLENDMODE_BLEND);
 }
 
 SDL_Renderer* Renderer::createRendererPointer(SDL_Window* w, int index, Uint32 flags)
@@ -42,9 +45,9 @@ Renderer & Renderer::operator=(Renderer && other)
 	return *this;
 }
 
-void Renderer::DrawColor(const Util::ColorList::Color& color, uint8_t alpha) const
+void Renderer::DrawColor(const Util::ColorList::Color& color) const
 {
-    DrawColor(color.r, color.g, color.b, alpha);
+    DrawColor(color.r, color.g, color.b, color.a);
 }
 
 void Renderer::DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha) const

@@ -23,7 +23,7 @@ public:
 	Renderer& operator=(const Renderer& other);
 	Renderer& operator=(Renderer && other);
 
-    void DrawColor(const Util::ColorList::Color& /*color*/, uint8_t alpha = 255) const;
+    void DrawColor(const Util::ColorList::Color& /*color*/) const;
     void DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha = 255) const;
     void Clear() const;
     void Clear(const Util::ColorList::Color& /*color*/) const;
