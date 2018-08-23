@@ -93,12 +93,26 @@ const Window& Renderer::getWindow() const
 void AcsGameEngine::Renderer::DrawSprite(const Sprite& sprite) const noexcept
 {
     const Texture &texture = sprite.getTexture();
-    SDL_RenderCopy(getRawPointer(), texture.getRawPointer(), &(sprite.getSource()), &(sprite.getDestination()));
+    //SDL_RenderCopy(getRawPointer(), texture.getRawPointer(), &(sprite.getSource()), &(sprite.getDestination()));
+    SDL_RenderCopyEx(
+        getRawPointer(),
+        texture.getRawPointer(),
+        &(sprite.getSource()),
+        &(sprite.getDestination()),
+        sprite.angle(),
+        nullptr,//&(sprite.centerPoint()), @TODO - Fix this. If the angle > 0 then this messes up the whole thing unless it's null
+        sprite.flip()
+    );
 }
 
 Texture Renderer::make_texture(const std::string & path)
 {	
 	SDL_Surface *tmp = IMG_Load(path.c_str());
+
+    if (tmp == nullptr) {
+        throw std::string{ "Unable to load image: " } +path;
+    }
+
 	SDL_Texture *t = SDL_CreateTextureFromSurface(getRawPointer(), tmp);
 	SDL_FreeSurface(tmp);
 
