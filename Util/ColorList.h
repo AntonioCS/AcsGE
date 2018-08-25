@@ -1,6 +1,7 @@
 #ifndef COLORLIST_H
 #define COLORLIST_H
 
+#include <algorithm>
 
 namespace AcsGameEngine::Util {
 
@@ -9,11 +10,11 @@ namespace AcsGameEngine::Util {
 struct ColorList {
     
     struct Color {
-        const int r;
-        const int g;
-        const int b;
+        int r;
+        int g;
+        int b;
 
-        const char* hex;
+        char *hex = nullptr;
 
         //alpha
         const unsigned int maxAlphaValue{ 255 };
@@ -22,13 +23,50 @@ struct ColorList {
         bool operator!=(const Color &rhs) const {
             return !(operator==(rhs));
         }
-        bool operator==(const Color &rhs) const { 
+        bool operator==(const Color &rhs) const {
             return rhs.r == r && rhs.g == g && rhs.b == b && rhs.a == a;
         }
 
         void alphaPercentage(unsigned int value) noexcept {
             a = value * maxAlphaValue / 100;
         }
+
+        Color(int r, int g, int b) : r(r), b(b), g(g)
+        {
+        }
+
+        Color(int r, int g, int b, const char *hex) : Color(r, g, b)
+        {
+            hex = hex;
+        }
+
+        Color(int r, int g, int b, int alpha) : Color(r, g, b, "")
+        {
+            a = alpha;
+        }
+
+        Color(const Color &other)
+        {
+            r = other.r;
+            g = other.g;
+            b = other.b;
+            a = other.a;
+            hex = other.hex;
+        }
+
+        Color &operator=(const Color &other)
+        {
+           if (&other != this) {            
+                r = other.r;
+                g = other.g;
+                b = other.b;
+                a = other.a;
+                hex = other.hex;
+            }
+    
+            return *this;
+        }
+
     };
 
     static const Color _nocolor;
