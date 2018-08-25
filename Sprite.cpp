@@ -116,6 +116,16 @@ namespace AcsGameEngine {
     {
         return m_source;
     }
+    void Sprite::setOffSet(int x, int y) noexcept
+    {
+        m_offSet.first = x;
+        m_offSet.second = y;
+    }
+
+    std::pair<int, int> Sprite::getOffSet() const noexcept
+    {
+        return m_offSet;
+    }
     const Texture & Sprite::getTexture() const noexcept
     {
         return m_texture;

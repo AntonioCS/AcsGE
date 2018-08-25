@@ -2,20 +2,20 @@
 #define SPRITE_H
 
 #include <SDL2/SDL.h>
-#include <memory>
+#include <utility> // std::pair
 #include "Texture.h"
 
 namespace AcsGameEngine {
 
 
     class Sprite {
-    private:
         const Texture & m_texture;
         SDL_Rect m_source{ 0, 0, 0, 0 };
         SDL_Rect m_destination{ 0, 0, 0, 0 };
         double m_angle{ 0 };
         SDL_RendererFlip m_flip{ SDL_FLIP_NONE };
         SDL_Point m_center;
+        std::pair<int, int> m_offSet;
 
     public:
         Sprite(const Texture &texture, SDL_Rect);
@@ -48,6 +48,9 @@ namespace AcsGameEngine {
         std::pair<int, int> getDestinationPoint() const noexcept;
         SDL_Rect getDestination() const noexcept;
         SDL_Rect getSource() const noexcept;
+
+        void setOffSet(int x, int y) noexcept;
+        std::pair<int, int> getOffSet() const noexcept;
 
         const Texture& getTexture() const noexcept;
     };
