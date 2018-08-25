@@ -10,7 +10,6 @@
 #include "Sprite.h"
 #include "Util/Timer.h"
 
-
 namespace AcsGameEngine {
     using namespace Util;
     class Animation
@@ -20,17 +19,16 @@ namespace AcsGameEngine {
         const Texture &m_texture;
 
         std::chrono::milliseconds m_duration;
-        unsigned int m_position{0};
+        unsigned int m_position{ 0 };
         bool m_running{ false };
 
         Timer m_timer;
 
         void applyToFrames(std::chrono::milliseconds);
-	public:
+    public:
         Animation(
             const std::string name,
-            const Texture &texture,
-            std::chrono::milliseconds duration
+            const Texture &texture
         );
 
         Animation(
@@ -52,7 +50,9 @@ namespace AcsGameEngine {
         void stop();
         Sprite &get();
 
+        Sprite & get(int position);
+
         void delayBy(std::chrono::milliseconds);
         void speedUpBy(std::chrono::milliseconds);
-	};
+    };
 }
