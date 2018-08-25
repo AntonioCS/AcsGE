@@ -45,9 +45,12 @@ Renderer & Renderer::operator=(Renderer && other)
 	return *this;
 }
 
-void Renderer::DrawColor(const Util::ColorList::Color& color) const
+void Renderer::DrawColor(const CList::Color& color)
 {
-    DrawColor(color.r, color.g, color.b, color.a);
+    if (color != CList::_nocolor) {
+        m_currentColor = color;
+        DrawColor(color.r, color.g, color.b, color.a);
+    }
 }
 
 void Renderer::DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha) const
@@ -55,14 +58,9 @@ void Renderer::DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha) const
     SDL_SetRenderDrawColor(getRawPointer(), r, g, b, alpha);
 }
 
-void Renderer::Clear(const Util::ColorList::Color& color) const
+void Renderer::Clear(const Util::ColorList::Color& c)
 {
-    DrawColor(color);
-    Clear();
-}
-
-void Renderer::Clear() const
-{
+    DrawColor(c);
     SDL_RenderClear(getRawPointer());
 }
 
@@ -71,13 +69,15 @@ void Renderer::Present() const
     SDL_RenderPresent(getRawPointer());
 }
 
-void Renderer::DrawRect(const SDL_Rect rect, const Util::ColorList::Color& c, bool fill) const
+void Renderer::DrawRect(const SDL_Rect rect, const CList::Color& c, bool fill)
 {
-    if (c != Util::ColorList::_nocolor) {
-        DrawColor(c);
-    }
-
+    DrawColor(c);
     fill ? SDL_RenderFillRect(getRawPointer(), &rect) : SDL_RenderDrawRect(getRawPointer(), &rect);
+}
+
+void Renderer::DrawRect(const Sprite &sprite, const CList::Color & c, bool fill)
+{
+    DrawRect(sprite.getDestination(), c, fill);
 }
 
 SDL_Renderer* Renderer::getRawPointer() const
@@ -88,6 +88,16 @@ SDL_Renderer* Renderer::getRawPointer() const
 const Window& Renderer::getWindow() const
 {
     return m_window;
+}
+
+bool Renderer::hasColor() const noexcept
+{
+    return m_currentColor != CList::_nocolor;
+}
+
+Renderer::CList::Color Renderer::getColor() const noexcept
+{
+    return m_currentColor;
 }
 
 void AcsGameEngine::Renderer::DrawSprite(const Sprite& sprite) const noexcept
@@ -105,12 +115,28 @@ void AcsGameEngine::Renderer::DrawSprite(const Sprite& sprite) const noexcept
     );
 }
 
-Texture Renderer::make_texture(const std::string & path)
-{	
-	SDL_Surface *tmp = IMG_Load(path.c_str());
+void Renderer::DrawLine(int x1, int y1, int x2, int y2, const CList::Color & c)
+{
+    DrawColor(c);
+    SDL_RenderDrawLine(getRawPointer(), x1, y1, x2, y2);
+}
+
+void Renderer::DrawPoint(int x, int y, const CList::Color &c)
+{
+    DrawColor(c);
+    SDL_RenderDrawPoint(getRawPointer(), x, y);
+}
+
+Texture Renderer::make_texture(const std::string & path, const Util::ColorList::Color transparentColor)
+{
+    SDL_Surface *tmp = IMG_Load(path.c_str());
 
     if (tmp == nullptr) {
         throw std::string{ "Unable to load image: " } +path;
+    }
+
+    if (transparentColor != Util::ColorList::_nocolor) {
+        SDL_SetColorKey(tmp, SDL_TRUE, SDL_MapRGB(tmp->format, transparentColor.r, transparentColor.g, transparentColor.b));
     }
 
 	SDL_Texture *t = SDL_CreateTextureFromSurface(getRawPointer(), tmp);
