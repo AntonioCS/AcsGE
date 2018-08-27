@@ -32,6 +32,7 @@ namespace AcsGameEngine {
         void DrawSprite(const Sprite &) const noexcept;
         void DrawLine(int x1, int y1, int x2, int y2, const CList::Color &c = CList::_nocolor);
         void DrawPoint(int x, int y, const CList::Color &c = CList::_nocolor);
+        void DrawCircle(std::pair<int, int> center, int radius, const CList::Color &c = CList::_nocolor, bool fill = false);
 
         Texture make_texture(const std::string & path, const Util::ColorList::Color transparentColor = CList::_nocolor);
 
