@@ -1,73 +1,11 @@
-#ifndef COLORLIST_H
-#define COLORLIST_H
+#pragma once
 
-#include <algorithm>
+#include "Color.h"
 
 namespace AcsGameEngine::Util {
 
 //From http://cloford.com/resources/colours/500col.htm;
-
 struct ColorList {
-    
-    struct Color {
-        int r;
-        int g;
-        int b;
-
-        char *hex = nullptr;
-
-        //alpha
-        const unsigned int maxAlphaValue{ 255 };
-        unsigned int a{ maxAlphaValue };
-
-        bool operator!=(const Color &rhs) const {
-            return !(operator==(rhs));
-        }
-        bool operator==(const Color &rhs) const {
-            return rhs.r == r && rhs.g == g && rhs.b == b && rhs.a == a;
-        }
-
-        void alphaPercentage(unsigned int value) noexcept {
-            a = value * maxAlphaValue / 100;
-        }
-
-        Color(int r, int g, int b) : r(r), b(b), g(g)
-        {
-        }
-
-        Color(int r, int g, int b, const char *hex) : Color(r, g, b)
-        {
-            hex = hex;
-        }
-
-        Color(int r, int g, int b, int alpha) : Color(r, g, b, "")
-        {
-            a = alpha;
-        }
-
-        Color(const Color &other)
-        {
-            r = other.r;
-            g = other.g;
-            b = other.b;
-            a = other.a;
-            hex = other.hex;
-        }
-
-        Color &operator=(const Color &other)
-        {
-           if (&other != this) {            
-                r = other.r;
-                g = other.g;
-                b = other.b;
-                a = other.a;
-                hex = other.hex;
-            }
-    
-            return *this;
-        }
-
-    };
 
     static const Color _nocolor;
 
@@ -664,4 +602,3 @@ struct ColorList {
     static const Color gray_1;
 };
 } // namespace AcsGameEngine::Util
-#endif // COLORLIST_H
