@@ -94,6 +94,8 @@ namespace AcsGameEngine::Util {
             auto x = (lineB_B * lineA_C - lineA_B * lineB_C) / det;
             auto y = (lineA_A * lineB_C - lineB_A * lineA_C) / det;
             std::cout << "Collision X: " << x << " Y: " << y << '\n';
+
+            return true;
         }
         else
         {
