@@ -3,10 +3,9 @@
 #include "Vector2D.h"
 
 namespace AcsGameEngine::Util {
-    Vector2D::Vector2D() {}
     Vector2D::Vector2D(float x, float y) : x(x), y(y) {}
     Vector2D::Vector2D(const Vector2D& other) : x(other.x), y(other.y) {}
-    Vector2D::Vector2D(Vector2D &&other) : x(std::move(other.x)), y(std::move(other.y)) {}
+    Vector2D::Vector2D(Vector2D &&other) noexcept : x(other.x), y(other.y) {}
 
     Vector2D &Vector2D::operator=(const Vector2D &other) {
         if (this != &other) {
@@ -16,7 +15,7 @@ namespace AcsGameEngine::Util {
 
         return *this;
     }
-    Vector2D& Vector2D::operator=(Vector2D &&other) {
+    Vector2D& Vector2D::operator=(Vector2D &&other) noexcept {
         if (this != &other) {
             x = other.x;
             y = other.y;
@@ -24,8 +23,6 @@ namespace AcsGameEngine::Util {
 
         return *this;
     }
-
-    Vector2D::~Vector2D() {}
 
     //++Vector2D
     Vector2D& Vector2D::operator++()
