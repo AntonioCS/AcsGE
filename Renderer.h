@@ -27,6 +27,7 @@ namespace AcsGameEngine {
         Renderer(Renderer &&) = default;
         Renderer& operator=(const Renderer& other);
         Renderer& operator=(Renderer && other) noexcept;
+        ~Renderer() = default;
 
         void DrawColor(const Color&) const noexcept;
         void DrawColor(const Color*) const noexcept;
@@ -43,6 +44,7 @@ namespace AcsGameEngine {
 
         void DrawSprite(const Sprite &) const noexcept;
 
+        Texture make_texture(const std::string & path) const;
         Texture make_texture(const std::string & path, const Color &transparentColor) const;
 
         SDL_Renderer* getRawPointer() const noexcept;
