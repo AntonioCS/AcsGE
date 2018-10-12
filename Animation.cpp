@@ -68,7 +68,7 @@ namespace AcsGameEngine {
             play();
         }
 
-        auto currentFrameDuration = m_frames.at(m_position).second;
+        const auto currentFrameDuration = m_frames.at(m_position).second;
 
         if (m_timer.elapsed() > currentFrameDuration) {
             m_timer.reset();
