@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <vector>
 #include <memory> //unique_ptr
 #include <functional> //std::reference_wrapper
@@ -13,8 +12,9 @@ namespace AcsGameEngine::ECS {
 	{
 		std::vector<std::unique_ptr<Entity>> m_entities;
 	public:
-		EntityManager();
-		~EntityManager();
+        EntityManager() = default;
+        ~EntityManager() = default;
+
 
 		Entity &make_entity();
 
