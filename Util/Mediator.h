@@ -4,27 +4,52 @@
 #include <vector>
 
 namespace AcsGameEngine::Util {
-	template <typename keyType, typename funcType>
-	class Mediator {
-	public:
-		void attach(keyType eventName, funcType func) noexcept
-		{
-			m_events[eventName].push_back(func);
-		}
+    template <typename keyType, typename funcType>
+    class Mediator {
+        using keyFunc = std::unordered_map<keyType, std::vector<funcType>>;
 
-		template <typename... Args>
-		void trigger(keyType eventName, Args... args)
-		{
-			if (m_events.find(eventName) != m_events.end()) {
-				for (const auto& f : m_events[eventName]) {
-					f(args...);
-				}
-			}
-		}
+        keyFunc m_events;
+    public:
+        Mediator() = default;
+        virtual ~Mediator() = default;
 
-		virtual ~Mediator() {}
+        Mediator(const Mediator& other) : m_events(other.m_events)
+        {
+        }
 
-	private:
-		std::unordered_map<keyType, std::vector<funcType>> m_events;
-	};
+        Mediator(Mediator&& other) noexcept : m_events(std::move(other.m_events))
+        {
+        }
+
+        Mediator& operator=(const Mediator& other)
+        {
+            if (this == &other)
+                return *this;
+            m_events = other.m_events;
+            return *this;
+        }
+
+        Mediator& operator=(Mediator&& other) noexcept
+        {
+            if (this == &other)
+                return *this;
+            m_events = std::move(other.m_events);
+            return *this;
+        }
+
+        void attach(keyType eventName, funcType func) noexcept
+        {
+            m_events[eventName].push_back(func);
+        }
+
+        template <typename... Args>
+        void trigger(keyType eventName, Args... args)
+        {
+            if (m_events.find(eventName) != m_events.end()) {
+                for (const auto& f : m_events[eventName]) {
+                    f(args...);
+                }
+            }
+        }
+    };
 }
