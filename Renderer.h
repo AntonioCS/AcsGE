@@ -18,11 +18,11 @@ namespace AcsGameEngine {
 
     class Renderer {
         std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_renderer;
-        const Window& m_window;
+        Window& m_window;
         SDL_Renderer* createRendererPointer(SDL_Window* w, int index, Uint32 flags) const noexcept;
 
     public:
-        explicit Renderer(const Window& window, int index = -1, Uint32 flags = SDL_RENDERER_ACCELERATED);
+        explicit Renderer(Window& window, int index = -1, Uint32 flags = SDL_RENDERER_ACCELERATED);
         Renderer(const Renderer& orig) = delete;
         Renderer(Renderer &&) = default;
         Renderer& operator=(const Renderer& other);
@@ -35,6 +35,7 @@ namespace AcsGameEngine {
 
         void Clear(const Color &) const noexcept;
         void Clear() const noexcept;
+
         void Present() const noexcept;
 
         void DrawRect(SDL_Rect, bool fill = false) const noexcept;
