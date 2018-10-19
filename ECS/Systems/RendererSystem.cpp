@@ -6,16 +6,12 @@ namespace AcsGameEngine::ECS {
 
 	RendererSystem::RendererSystem(EntityManager & em, Renderer & renderer) : System(em), m_renderer(renderer) {}
 
-	RendererSystem::~RendererSystem()
-	{
-	}
-
 	void RendererSystem::init()
 	{
 		m_vecRef = m_entityManager.findByComponent<RenderableComponent, SpriteComponent>();
 	}
 
-	void RendererSystem::update(float dt)
+    void RendererSystem::update(std::chrono::milliseconds dt)
 	{
 	}
 
