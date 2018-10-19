@@ -138,8 +138,10 @@ namespace AcsGameEngine::Util {
     }    
 
     //https://www.youtube.com/watch?v=l-u6uxnOmH0&index=2&list=PLqCJpWy5Fohd6Hg5BW8eAjo5SzQQYl43S
+         /*
     void Drawer::DrawLineCustom(const Line &line) const noexcept
     {
+   
         m_renderer.DrawColor(line.borderColor);
 
         //if Y dominant 
@@ -194,20 +196,10 @@ namespace AcsGameEngine::Util {
                 const auto x = w * static_cast<float>(y) + p;
                 m_renderer.DrawPoint(x, y);
             }
-        }
-
-
+        }     
         //m_renderer.DrawPoint();
-
-
-
-
-
-
-
-
     }
-
+    */
     void Drawer::DrawTriangle(const Triangle &triangle) const noexcept
     {
         DrawLine(triangle.lineOA);
