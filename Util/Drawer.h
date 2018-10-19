@@ -33,7 +33,7 @@ namespace AcsGameEngine::Util {
         void DrawRect(const Rectangle &) const noexcept;
         void DrawPoint(const Point &) const noexcept;
         void DrawLine(const Line &) const noexcept;
-        void DrawLineCustom(const Line &) const noexcept;
+        //void DrawLineCustom(const Line &) const noexcept;
         void DrawTriangle(const Triangle &) const noexcept;
 
         void DrawShape(const Circle &) const noexcept;
