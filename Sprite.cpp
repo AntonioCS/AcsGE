@@ -14,7 +14,7 @@ namespace AcsGameEngine {
         m_center.y = m_destination.h / 2;
     }
 
-    Sprite::Sprite(Sprite&& other)
+    Sprite::Sprite(Sprite&& other) noexcept
         : m_texture(other.m_texture)
         , m_destination(std::move(other.m_destination))
         , m_source(std::move(other.m_source))

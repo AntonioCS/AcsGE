@@ -19,7 +19,7 @@ namespace AcsGameEngine {
 
     public:
         Sprite(const Texture &texture, SDL_Rect);
-        Sprite(Sprite&& other);
+        Sprite(Sprite&& other) noexcept;
         ~Sprite() = default;
 
         void setSourceDestination(SDL_Rect, SDL_Rect);
