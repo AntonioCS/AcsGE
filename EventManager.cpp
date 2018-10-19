@@ -1,5 +1,6 @@
 #include "EventManager.h"
 
+#include <SDL2/SDL.h>
 #include <utility>
 
 namespace AcsGameEngine {
@@ -25,8 +26,10 @@ namespace AcsGameEngine {
     }
 
     void EventManager::processEvents() {
-        while (SDL_PollEvent(&m_event) != 0) {
-            trigger(m_event.type, m_event);
+        SDL_Event event;
+
+        while (SDL_PollEvent(&event) != 0) {
+            trigger(event.type, event);
         }
     }
 
