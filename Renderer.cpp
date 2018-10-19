@@ -1,13 +1,7 @@
-#include <SDL2/SDL_image.h>
-//#include <iostream>
-//#include <cmath>
-#include <vector>
-//#include <array>
-//#include <utility> //std::pair
-//#include <algorithm> // std::min, std::max
-//#include <unordered_map>
-
 #include "Renderer.h"
+
+#include <SDL2/SDL_image.h>
+
 #include "Sprite.h"
 #include "Texture.h"
 #include "Window.h"
@@ -20,7 +14,7 @@ namespace AcsGameEngine {
     using Util::Color;
     using Util::ColorList;
 
-    Renderer::Renderer(const Window& window, int index, Uint32 flags)
+    Renderer::Renderer(Window& window, int index, Uint32 flags)
         : m_renderer(createRendererPointer(window.getRawPointer(), index, flags), SDL_DestroyRenderer)
         , m_window(window)
     {
