@@ -2,14 +2,16 @@
 
 //#include <SDL2/SDL.h>
 #include <functional>
+#include <string>
 #include "Util/Mediator.h"
 
 union SDL_Event;
 
 namespace AcsGameEngine {
+    using Util::Mediator;
+    using eventFunc = std::function<void(SDL_Event &event)>;
 
-    class EventManager : public AcsGameEngine::Util::Mediator<uint32_t, std::function<void(SDL_Event &event)>> {
-        using eventFunc = std::function<void(SDL_Event &event)>;
+    class EventManager : public Mediator<uint32_t, eventFunc> {
     public:
         void onMouseClick(eventFunc func);
 
@@ -19,10 +21,16 @@ namespace AcsGameEngine {
 
         void onQuit(eventFunc func);
 
-        void onEvent(uint32_t eventName, eventFunc func);
+        void onEvent(const uint32_t eventName, eventFunc func);
 
-        void processEvents();
+        void processEvents(const std::string &nameSpace = "Global");
 
-        bool isKeyPressed(uint8_t key);
+        bool isKeyPressed(const uint8_t key);
+
+    private:
+        std::unordered_map<
+            std::string,
+            std::unordered_map<uint32_t, bool>
+        > m_toTrigger;
     };
 } //namespace AcsGameEngine

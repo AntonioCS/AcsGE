@@ -21,19 +21,19 @@ namespace AcsGameEngine {
         attach(SDL_QUIT, std::move(func));
     }
 
-    void EventManager::onEvent(Uint32 eventName, eventFunc func) {
+    void EventManager::onEvent(const uint32_t eventName, eventFunc func) {
         attach(eventName, std::move(func));
     }
 
-    void EventManager::processEvents() {
+    void EventManager::processEvents(const std::string &nameSpace) {
         SDL_Event event;
 
         while (SDL_PollEvent(&event) != 0) {
-            trigger(event.type, event);
+            trigger(nameSpace, event.type, event);
         }
     }
 
-    bool EventManager::isKeyPressed(Uint8 key) {
+    bool EventManager::isKeyPressed(const Uint8 key) {
         const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
         return keyState[key] != 0u;
     }
