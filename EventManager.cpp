@@ -29,7 +29,7 @@ namespace AcsGameEngine {
         SDL_Event event;
 
         while (SDL_PollEvent(&event) != 0) {
-            trigger(nameSpace, event.type, event);
+            trigger(event.type, event);
         }
     }
 

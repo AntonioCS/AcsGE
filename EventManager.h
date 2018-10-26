@@ -11,7 +11,7 @@ namespace AcsGameEngine {
     using Util::Mediator;
     using eventFunc = std::function<void(SDL_Event &event)>;
 
-    class EventManager {
+    class EventManager : public Mediator<uint32_t, eventFunc> {
     public:
         void onMouseClick(eventFunc func);
 
