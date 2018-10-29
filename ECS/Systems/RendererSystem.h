@@ -2,20 +2,23 @@
 
 
 #include "../System.h"
-#include "../EntityManager.h"
-#include "../../Renderer.h"
+
+//#include "../EntityManager.h"
+//#include "../../Renderer.h"
+
+namespace AcsGameEngine
+{
+    class Renderer;
+}
+
 
 namespace AcsGameEngine::ECS {
 
     class RendererSystem : public System
     {
-        Renderer &m_renderer;
     public:
-        RendererSystem(EntityManager &em, Renderer &renderer);
-        ~RendererSystem() = default;
-
         void init() override;
         void update(std::chrono::milliseconds dt) override;
-        void render() override;
+        void render(Renderer &renderer) override;
 	};
 }
