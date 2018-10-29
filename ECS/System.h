@@ -1,24 +1,28 @@
 #pragma once
 
 #include <chrono>
-
-#include "EntityManager.h"
 #include "Entity.h"
 
+namespace AcsGameEngine
+{
+    class Renderer;
+}
+
 namespace AcsGameEngine::ECS {
-	using VecEntityRef = std::vector<std::reference_wrapper<Entity>>;
+    using VecEntityRef = std::vector<std::reference_wrapper<Entity>>;
 
-	class System {
-	protected:
-		EntityManager &m_entityManager;
-		VecEntityRef m_vecRef;
+    class EntityManager;
 
-	public:
-		System(EntityManager &em) : m_entityManager(em) {}
+    class System {
+    protected:
+        VecEntityRef m_vecRef;
+
+    public:
+        System() = default;
         virtual ~System() = default;
 
-		virtual void init() = 0;
-		virtual void update(std::chrono::milliseconds) = 0;
-		virtual void render() = 0;
-	};
+        virtual void init() = 0;
+        virtual void update(std::chrono::milliseconds) = 0;
+        virtual void render(Renderer &renderer) = 0;
+    };
 }
