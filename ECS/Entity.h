@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <unordered_map>
-#include <typeinfo>
 #include <type_traits>
 #include <exception>
 #include <cassert>
@@ -69,12 +68,10 @@ namespace AcsGameEngine::ECS {
 
 		template<typename T, typename... MoreComponents>
 		bool hasComponents() {
-			if constexpr (sizeof...(MoreComponents) == 0)
-			{
+			if constexpr (sizeof...(MoreComponents) == 0) {
 				return hasComponent<T>();
 			}
-			else
-			{
+			else {
 				return hasComponent<T>() && hasComponents<MoreComponents...>();
 			}
 		}
