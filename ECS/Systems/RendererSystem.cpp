@@ -4,12 +4,14 @@
 #include "../EntityManager.h"
 #include "../Components/RenderableComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/Shapes/CircleComponent.h"
+#include "../../Util/Drawer.h"
 
 namespace AcsGameEngine::ECS {
 
     void RendererSystem::init()
     {
-        m_vecRef = getEntityManager().findByComponent<RenderableComponent, SpriteComponent>();
+        m_vecRef = getEntityManager()->findByComponent<RenderableComponent>();
     }
 
     void RendererSystem::update(std::chrono::milliseconds dt)
@@ -23,7 +25,21 @@ namespace AcsGameEngine::ECS {
             auto state = e.getComponent<RenderableComponent>();
 
             if (state.isVisible()) {
-                renderer.DrawSprite(e.getComponent<SpriteComponent>().getSprite());
+                if (e.hasComponent<SpriteComponent>())
+                {
+                    renderer.DrawSprite(e.getComponent<SpriteComponent>().getSprite());
+                }
+                else {
+                    Util::Drawer drawer{renderer};
+
+                    if (e.hasComponent<CircleComponent>())
+                    {
+                        CircleComponent &cicleComponent = e.getComponent<CircleComponent>();
+
+
+
+                    }
+                }
             }
         }
     }
