@@ -8,8 +8,6 @@ namespace AcsGameEngine::Util {
     template <typename keyType, typename funcType>
     class Mediator {
     public:
-        static const std::string defaultNameSpace;
-
         Mediator() = default;
         virtual ~Mediator() = default;
 
@@ -39,38 +37,18 @@ namespace AcsGameEngine::Util {
 
         void attach(keyType eventName, funcType func) noexcept
         {
-            attach(defaultNameSpace, eventName, func);
+            m_events[eventName] = func;
         }
-
-        void attach(std::string nameSpace, keyType eventName, funcType func) noexcept
-        {
-            m_events[nameSpace][eventName] = func;
-        }
-
 
         template <typename... Args>
         void trigger(keyType eventName, Args&&... args)
         {
-            trigger(defaultNameSpace, eventName, std::forward<Args>(args)...);
-        }
-
-        template <typename... Args>
-        void trigger(std::string nameSpace, keyType eventName, Args&&... args)
-        {
-            if (m_events.find(nameSpace) != m_events.end()) {
-                auto eventsGroup = m_events[nameSpace];
-
-                if (eventsGroup.find(eventName) != eventsGroup.end()) {
-                    eventsGroup[eventName](std::forward<Args>(args)...);
-                }
+            if (m_events.find(eventName) != m_events.end()) {
+                m_events[eventName](std::forward<Args>(args)...);
             }
         }
     private:
         using keyFunc = std::unordered_map<keyType, funcType>;
-        std::unordered_map<std::string, keyFunc> m_events;
-
+        keyFunc m_events;
     };
-
-    template <typename keyType, typename funcType>
-    const std::string Mediator<keyType, funcType>::defaultNameSpace{ "Global" };
 }
