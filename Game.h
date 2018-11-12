@@ -5,9 +5,8 @@
 
 #include "Renderer.h"
 #include "Window.h"
-
-//#include "EventManager.h"
-//#include "ECS/EntityManager.h"
+#include "EventManager.h"
+#include "ECS/EntityManager.h"
 
 #include "GameStateManager.h"
 
@@ -16,33 +15,22 @@ namespace AcsGameEngine {
     class Game
     {
     public:
-        GameStateManager gsm;
-        
-        Game(std::string windowTitle, std::pair<int,int> windowXY, std::pair<int,int> windowWH)
-        {   
-            m_windowData.windowTitle = windowTitle;
-            m_windowData.windowXY = windowXY;
-            m_windowData.windowWH = windowWH;
-        }
-
+        Game(std::string windowTitle, std::pair<int, int> windowXY, std::pair<int, int> windowWH);
         ~Game() = default;
-
 
         void Init();
         void Cleanup();
-
         void Run();
+        bool Running() const noexcept;
+        void Quit();
 
-        bool Running() const noexcept
-        {
-            return m_running;
-        }
-        void Quit()
-        {
-            m_running = false;
-        }
-
+        Renderer &getRenderer() const;
+        GameStateManager &getGSM();
+        EventManager &getEventManager();
+        ECS::EntityManager &getEntityManager();
     private:
+        GameStateManager m_gsm;
+
         struct WindowData
         {
             std::string windowTitle;
@@ -52,7 +40,9 @@ namespace AcsGameEngine {
 
         std::unique_ptr<Window> m_window;
         std::unique_ptr <Renderer> m_renderer;
+        EventManager m_eventManager;
+        ECS::EntityManager m_entityManager;
 
-        bool m_running{ false };
+        bool m_running{ true };
     };
 }
