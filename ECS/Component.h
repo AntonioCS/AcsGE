@@ -2,13 +2,12 @@
 
 namespace AcsGameEngine::ECS {
 
-	class Entity;
+    class Entity;
 
-	class Component {
-	public:
-		Entity * parentEntity;
+    class Component {
+    public:
+        Entity * parentEntity;
 
-		virtual ~Component() {}
-	};
-
+        virtual ~Component() = default;
+    };
 }
