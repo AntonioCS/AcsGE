@@ -9,23 +9,11 @@
 namespace AcsGameEngine
 {
     class GameStateManager;
+    class Renderer;
+    class EventManager;
 
     class GameState
     {
-        using SysRef = const std::unique_ptr<ECS::System>;
-        using SysFunc = std::function<void(const std::unique_ptr<ECS::System>& sys)>;
-
-        GameStateManager& m_gameStateManager;
-        std::vector<std::unique_ptr<ECS::System>> m_systems;
-    protected:
-        void loopAction(SysFunc func)
-        {
-            std::for_each(
-                std::begin(m_systems),
-                std::end(m_systems),
-                func
-            );
-        }
     public:
         GameState(GameStateManager& gsm) : m_gameStateManager(gsm)
         {
@@ -34,7 +22,26 @@ namespace AcsGameEngine
         virtual ~GameState() = default;
 
         virtual void init();
+        virtual void handleEvents();
         virtual void update(std::chrono::milliseconds deltaTime);
-        virtual void render();
+        virtual void render(Renderer &renderer);
+
+    protected:
+        using SysPtr = std::unique_ptr<ECS::System>;
+        using SysFunc = std::function<void(SysPtr &sys)>;
+    private:
+        GameStateManager& m_gameStateManager;
+        std::vector<SysPtr> m_systems;
+    protected:
+        GameStateManager &getGSM() const noexcept;
+
+        void loopAction(SysFunc func)
+        {
+            std::for_each(
+                std::begin(m_systems),
+                std::end(m_systems),
+                func
+            );
+        }
     };
 }
