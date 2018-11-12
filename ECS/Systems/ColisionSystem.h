@@ -2,8 +2,6 @@
 
 
 #include "../System.h"
-#include "../EntityManager.h"
-#include "../Entity.h"
 
 namespace AcsGameEngine::ECS {
 

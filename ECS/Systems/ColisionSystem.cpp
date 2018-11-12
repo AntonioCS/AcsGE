@@ -2,11 +2,12 @@
 
 #include "../Components/CollisionComponent.h"
 #include "../Components/PositionComponent.h"
+#include "../EntityManager.h"
 
 namespace AcsGameEngine::ECS {
 
 	void ColisionSystem::init() {
-		m_vecRef = m_entityManager.findByComponent<CollisionComponent, PositionComponent>();
+		m_vecRef = getEntityManager()->findByComponent<CollisionComponent, PositionComponent>();
 	}
 
 	void ColisionSystem::update(float dt) {
