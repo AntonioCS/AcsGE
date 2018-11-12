@@ -24,7 +24,7 @@ namespace AcsGameEngine::Util {
     Timer::ms Timer::elapsed() const noexcept
     {
         if (isStarted()) {            
-            auto elapsed = std::chrono::duration_cast<ms>(clock::now() - m_startTime);
+            const auto elapsed = std::chrono::duration_cast<ms>(clock::now() - m_startTime);
 
             return elapsed;
         }
