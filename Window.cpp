@@ -1,5 +1,4 @@
 #include "Window.h"
-#include <iostream>
 #include <utility> //std::pair
 
 namespace AcsGameEngine {
@@ -50,6 +49,16 @@ namespace AcsGameEngine {
     void Window::hideWindow() const noexcept
     {
         SDL_HideWindow(getRawPointer());
+    }
+
+    bool Window::isHidden() const noexcept
+    {
+        return isFlagSet(SDL_WINDOW_HIDDEN);
+    }
+
+    bool Window::isFlagSet(uint32_t flag) const noexcept
+    {
+        return ((SDL_GetWindowFlags(m_window.get()) & flag) == flag);
     }
 
     SDL_Window *Window::getRawPointer() const

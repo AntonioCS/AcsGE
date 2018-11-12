@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <SDL2/SDL.h>
 #include <memory>
@@ -8,7 +7,6 @@
 
 namespace AcsGameEngine {
     //https://wiki.libsdl.org/SDL_CreateWindow
-
     class Window {
         struct WindowDefaults
         {
@@ -50,11 +48,12 @@ namespace AcsGameEngine {
 
         void showWindow() const noexcept;
         void hideWindow() const noexcept;
+        bool isHidden() const noexcept;
 
         SDL_Window *getRawPointer() const;
     private:
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_window;
         SDL_Window *createWindowPointer(const std::string& title, int x, int y, int w, int h, uint32_t flags);
+        bool isFlagSet(uint32_t) const noexcept;
     };
 }  // namespace AcsGameEngine
-#endif // WINDOW_H
