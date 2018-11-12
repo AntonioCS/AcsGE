@@ -16,10 +16,24 @@ namespace AcsGameEngine::ECS {
     class System {
     protected:
         VecEntityRef m_vecRef;
-
+        EntityManager *m_entityManager = nullptr;
     public:
         System() = default;
         virtual ~System() = default;
+
+        void setEntityManager(EntityManager *em)
+        {
+            m_entityManager = em;
+        }
+
+        EntityManager *getEntityManager() const
+        {
+            if (m_entityManager == nullptr)
+            {
+                throw "Entity Manager not set";
+            }
+            return m_entityManager;
+        }
 
         virtual void init() = 0;
         virtual void update(std::chrono::milliseconds) = 0;
