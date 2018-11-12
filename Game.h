@@ -28,6 +28,7 @@ namespace AcsGameEngine {
         GameStateManager &getGSM();
         EventManager &getEventManager();
         ECS::EntityManager &getEntityManager();
+
     private:
         GameStateManager m_gsm;
 
