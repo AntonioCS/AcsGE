@@ -5,7 +5,6 @@
 namespace AcsGameEngine::Util::Shapes {
 
     class Radius {
-        float m_radius;
     public:
 
         Radius(float r) : m_radius(r) {
@@ -32,6 +31,8 @@ namespace AcsGameEngine::Util::Shapes {
         {
             return m_radius * m_radius;
         }
+    private:
+        float m_radius;
     };
 
     class Circle : public Shape {
