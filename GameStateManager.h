@@ -5,15 +5,14 @@
 #include "GameState.h"
 
 namespace AcsGameEngine {    
+    class Game;
+    class EventManager;
 
     class GameStateManager {
-        std::unordered_map<
-            std::string,
-            std::unique_ptr<GameState>
-        > m_states;
-
-        GameState *m_currentState = nullptr;
     public:
+        GameStateManager(Game &game) : m_game(game) {}
+        ~GameStateManager() = default;
+
         void changeState(const std::string &stateName) {
             if (m_states.find(stateName) != m_states.end())
             {
@@ -31,22 +30,25 @@ namespace AcsGameEngine {
                     name,
                     std::make_unique<GState>(*this, std::forward<GArgs>(gargs)...)
                 }
-            );            
-        }
+            );
 
-        template<typename GState>
-        void addState(std::string name) {
-            m_states.insert(
-                {
-                    name,
-                    std::make_unique<GState>(*this)
-                }
-            );            
+            m_currentState = &*(m_states[name]);
         }
 
         GameState *getCurrentState() const noexcept
         {
             return m_currentState;
         }
-    };   
+
+        Game &getGame() const noexcept
+        {
+            return m_game;
+        }
+    private:
+        using GameStateUPtr = std::unique_ptr<GameState>;
+
+        std::unordered_map<std::string, GameStateUPtr> m_states;
+        GameState *m_currentState = nullptr;
+        Game &m_game;
+    };
 }
