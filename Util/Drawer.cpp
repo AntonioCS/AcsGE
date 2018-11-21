@@ -59,7 +59,7 @@ namespace AcsGameEngine::Util {
     //https://en.wikipedia.org/wiki/Midpoint_circle_algorithm#C_Example
     void Drawer::DrawCircle(const Circle &circle) const noexcept
     {
-        auto[x0, y0] = circle.origin.getXY();
+        auto[x0, y0] = circle.origin.getXYint();
         std::vector<std::pair<int, int>> points;
         createCirclePoints(x0, y0, circle.radius, points);
 
