@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <exception>
 #include "Entity.h"
 
 namespace AcsGameEngine
@@ -30,7 +31,7 @@ namespace AcsGameEngine::ECS {
         {
             if (m_entityManager == nullptr)
             {
-                throw "Entity Manager not set";
+                throw std::runtime_error{ "Entity Manager not set" };
             }
             return m_entityManager;
         }
