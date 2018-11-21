@@ -1,3 +1,5 @@
+#include <exception>
+
 #include "Renderer.h"
 
 #include <SDL2/SDL_image.h>
@@ -20,13 +22,15 @@ namespace AcsGameEngine {
     {
 
         if (m_renderer == nullptr) {
-            throw std::runtime_error(std::string{ "Unable to initialize renderer: " }
-            +std::string{ SDL_GetError() });
+            throw std::runtime_error{
+                std::string{ "Unable to initialize renderer: " } + std::string{ SDL_GetError() }
+            };
         }
 
         SDL_SetRenderDrawBlendMode(getRawPointer(), SDL_BLENDMODE_BLEND);
     }
 
+    //https://wiki.libsdl.org/SDL_CreateRenderer
     SDL_Renderer* Renderer::createRendererPointer(SDL_Window* w, int index, Uint32 flags) const noexcept
     {
         return SDL_CreateRenderer(w, index, flags);
@@ -136,7 +140,7 @@ namespace AcsGameEngine {
         SDL_Surface *tmp = IMG_Load(path.c_str());
 
         if (tmp == nullptr) {
-            throw std::string{ "Unable to load image: " } +path;
+            throw std::invalid_argument{ std::string{ "Unable to load image: "} +path  } ;
         }
 
         if (transparentColor != ColorList::_nocolor) {
@@ -148,5 +152,4 @@ namespace AcsGameEngine {
 
         return Texture{ t };
     }
-
-} // namespace AcsGameEngine
+}
