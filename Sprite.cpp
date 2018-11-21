@@ -130,5 +130,4 @@ namespace AcsGameEngine {
     {
         return m_texture;
     }
-
-} // namespace AcsGameEngine
+}
