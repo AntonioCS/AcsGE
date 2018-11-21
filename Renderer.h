@@ -17,10 +17,6 @@ namespace AcsGameEngine {
     using Util::Color;
 
     class Renderer {
-        std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_renderer;
-        Window& m_window;
-        SDL_Renderer* createRendererPointer(SDL_Window* w, int index, Uint32 flags) const noexcept;
-
     public:
         explicit Renderer(Window& window, int index = -1, Uint32 flags = SDL_RENDERER_ACCELERATED);
         Renderer(const Renderer& orig) = delete;
@@ -50,5 +46,10 @@ namespace AcsGameEngine {
 
         SDL_Renderer* getRawPointer() const noexcept;
         const Window& getWindow() const noexcept;
+
+    private:
+        std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_renderer;
+        Window& m_window;
+        SDL_Renderer* createRendererPointer(SDL_Window* w, int index, Uint32 flags) const noexcept;
     };
 } //namespace AcsGameEngine
