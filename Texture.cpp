@@ -10,7 +10,7 @@ namespace AcsGameEngine {
 
     SDL_Texture * Texture::getRawPointer() const
     {
-		return m_texturePtr.get();
+        return m_texturePtr.get();
     }
 
-} // namespace AcsGameEngine
+}
