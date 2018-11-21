@@ -2,17 +2,16 @@
 
 #include "../Component.h"
 #include "../../Sprite.h"
-#include <SDL2/SDL.h>
+#include "../../Util/Shapes/Rectangle.h"
 
 namespace AcsGameEngine::ECS {
-	class SpriteComponent : public Component
-	{
-		Sprite m_sprite;
-	public:
-		SpriteComponent(Texture &texture, SDL_Rect s, int x, int y);
-		~SpriteComponent() = default;
+    class SpriteComponent : public Component
+    {
+        Sprite m_sprite;
+    public:
+        SpriteComponent(Texture &texture, AcsGameEngine::Util::Shapes::Rectangle rect, int x, int y);
+        ~SpriteComponent() = default;
 
-		Sprite &getSprite();
-	};
+        Sprite &getSprite();
+    };
 }
-
