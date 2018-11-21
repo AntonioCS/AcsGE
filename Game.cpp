@@ -7,7 +7,7 @@
 #include <sstream>
 #include <stdexcept> //std::runtime_error
 #include <iostream>
-//#include <iostream>
+#include <exception>
 
 #include "Game.h"
 #include "Util/Timer.h"
@@ -68,8 +68,7 @@ namespace AcsGameEngine {
         Util::Timer timer;
         timer.start();
 
-
-        constexpr milliseconds timeStep{ 12ms };
+        constexpr milliseconds timeStep{ 16ms };
         auto accumulator{ 0ms };
         auto frameTime{ 0ms }; //deltaTime I prefer the word frameTime
         if (m_window->isHidden())
@@ -92,7 +91,7 @@ namespace AcsGameEngine {
 
             if (m_gsm.getCurrentState() == nullptr)
             {
-                throw "Current state is a nullptr";
+                throw std::runtime_error{ "Current state is a null" };
             }
 
             auto &currentState = *(m_gsm.getCurrentState());
@@ -100,7 +99,6 @@ namespace AcsGameEngine {
             do
             {
                 currentState.update(timeStep);
-
                 accumulator -= timeStep;
             } while (accumulator >= timeStep);
 
