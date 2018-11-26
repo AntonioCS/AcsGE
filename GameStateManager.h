@@ -33,6 +33,7 @@ namespace AcsGameEngine {
             );
 
             m_currentState = &*(m_states[name]);
+            configureCurrentGameState();
         }
 
         GameState *getCurrentState() const noexcept
@@ -44,11 +45,15 @@ namespace AcsGameEngine {
         {
             return m_game;
         }
+
     private:
         using GameStateUPtr = std::unique_ptr<GameState>;
 
         std::unordered_map<std::string, GameStateUPtr> m_states;
         GameState *m_currentState = nullptr;
         Game &m_game;
+
+        void configureCurrentGameState();
     };
+
 }
