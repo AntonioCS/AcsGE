@@ -6,11 +6,14 @@
 
 #include <sstream>
 #include <stdexcept> //std::runtime_error
-#include <iostream>
 #include <exception>
 
 #include "Game.h"
+#include "Renderer.h"
+#include "Window.h"
+#include "GameStateManager.h"
 #include "Util/Timer.h"
+#include "Util/ColorList.h"
 
 template<typename... Types>
 void throwException(Types... args) {
@@ -22,7 +25,6 @@ void throwException(Types... args) {
 
 namespace AcsGameEngine {
     Game::Game(std::string windowTitle, std::pair<int, int> windowXY, std::pair<int, int> windowWH)
-    : m_gsm(*this)
     {
         m_windowData.windowTitle = windowTitle;
         m_windowData.windowXY = windowXY;
@@ -49,6 +51,9 @@ namespace AcsGameEngine {
         m_window = std::make_unique<Window>(m_windowData.windowTitle, x, y, w, h);
 
         m_renderer = std::make_unique<Renderer>(*m_window);
+
+        m_gameStateManager = std::make_unique<GameStateManager>(*this);
+
     }
 
     void Game::Cleanup()
@@ -71,14 +76,10 @@ namespace AcsGameEngine {
         constexpr milliseconds timeStep{ 16ms };
         auto accumulator{ 0ms };
         auto frameTime{ 0ms }; //deltaTime I prefer the word frameTime
+
         if (m_window->isHidden())
         {
-            std::cout << "Was hidden\n";
             m_window->showWindow();
-        }
-        else
-        {
-            std::cout << "Was not hidden\n";
         }
 
         while (m_running)
@@ -89,12 +90,12 @@ namespace AcsGameEngine {
 
             m_eventManager.processEvents();
 
-            if (m_gsm.getCurrentState() == nullptr)
+            if (m_gameStateManager->getCurrentState() == nullptr)
             {
                 throw std::runtime_error{ "Current state is a null" };
             }
 
-            auto &currentState = *(m_gsm.getCurrentState());
+            auto &currentState = *(m_gameStateManager->getCurrentState());
 
             do
             {
@@ -102,10 +103,10 @@ namespace AcsGameEngine {
                 accumulator -= timeStep;
             } while (accumulator >= timeStep);
 
-            //m_renderer->Clear(ColorList::white);
-            m_renderer->Clear();
+            m_renderer->Clear(Util::ColorList::white);
+            //m_renderer->Clear();
 
-            currentState.render(*m_renderer);
+            currentState.render();
 
             m_renderer->Present();
         }
@@ -121,24 +122,28 @@ namespace AcsGameEngine {
         m_running = false;
     }
 
-
-    Renderer& Game::getRenderer() const
+    Renderer *Game::getRenderer() const
     {
-        return *m_renderer;
+        return m_renderer.get();
     }
 
-    GameStateManager& Game::getGSM()
+    Window *Game::getWindow() const
     {
-        return m_gsm;
+        return m_window.get();
     }
 
-    EventManager& Game::getEventManager()
+    GameStateManager *Game::getGSM()
     {
-        return m_eventManager;
+        return m_gameStateManager.get();
     }
 
-    ECS::EntityManager & Game::getEntityManager()
+    EventManager *Game::getEventManager()
     {
-        return m_entityManager;
+        return &m_eventManager;
+    }
+
+    ECS::EntityManager *Game::getEntityManager()
+    {
+        return &m_entityManager;
     }
 }
