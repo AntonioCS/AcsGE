@@ -5,12 +5,14 @@
 #include <algorithm>
 
 #include "ECS/System.h"
+#include "Renderer.h"
+#include "Window.h"
 
 namespace AcsGameEngine
 {
     class GameStateManager;
-    class Renderer;
-    class Window;
+    //class Renderer;
+    //class Window;
     class EventManager;
 
     class GameState
@@ -23,6 +25,7 @@ namespace AcsGameEngine
         virtual void handleEvents();
         virtual void update(std::chrono::milliseconds deltaTime);
         virtual void render();
+        virtual std::string getName() const noexcept = 0;
 
         void setGameStateManager(GameStateManager *gsm)
         {

@@ -28,17 +28,13 @@ namespace AcsGameEngine
         );
     }
 
-    void GameState::render(Renderer &renderer)
+    void GameState::render()
     {
-        loopAction(
+     /*   loopAction(
             [&renderer](SysPtr &sys) {
                 sys.get()->render(renderer);
             }
         );
-    }
-
-    GameStateManager & GameState::getGSM() const noexcept
-    {
-        return m_gameStateManager;
+        */
     }
 }
