@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include <string>
 #include "GameState.h"
 
 namespace AcsGameEngine {    
@@ -23,28 +24,26 @@ namespace AcsGameEngine {
             }
         }
 
+        void init();
+
         template<typename GState, typename... GArgs>
-        void addState(std::string name, GArgs&& ...gargs) {
+        GameStateManager *addState(std::string name, GArgs&& ...gargs) {
             m_states.insert(
                 {
                     name,
-                    std::make_unique<GState>(*this, std::forward<GArgs>(gargs)...)
+                    std::make_unique<GState>(std::forward<GArgs>(gargs)...)
                 }
             );
 
             m_currentState = &*(m_states[name]);
             configureCurrentGameState();
+
+            return this;
         }
 
-        GameState *getCurrentState() const noexcept
-        {
-            return m_currentState;
-        }
+        GameState* getCurrentState() const noexcept;
 
-        Game &getGame() const noexcept
-        {
-            return m_game;
-        }
+        Game& getGame() const noexcept;
 
     private:
         using GameStateUPtr = std::unique_ptr<GameState>;
