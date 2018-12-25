@@ -25,24 +25,24 @@ namespace AcsGameEngine {
         Renderer& operator=(Renderer && other) noexcept;
         ~Renderer() = default;
 
-        void DrawColor(const Color&) const noexcept;
-        void DrawColor(const Color*) const noexcept;
-        void DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha = 255) const noexcept;
+        void drawColor(const Color&) const noexcept;
+        void drawColor(const Color*) const noexcept;
+        void drawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha = 255) const noexcept;
 
-        void Clear(const Color &) const noexcept;
-        void Clear() const noexcept;
+        void clear(const Color &) const noexcept;
+        void clear() const noexcept;
 
-        void Present() const noexcept;
+        void present() const noexcept;
 
-        void DrawRect(SDL_Rect, bool fill = false) const noexcept;
-        void DrawRect(const Sprite &, bool fill = false) const noexcept;
-        void DrawLine(int x1, int y1, int x2, int y2) const noexcept;
-        void DrawPoint(int x, int y) const noexcept;
+        void drawRect(SDL_Rect, bool fill = false) const noexcept;
+        void drawRect(const Sprite &, bool fill = false) const noexcept;
+        void drawLine(int x1, int y1, int x2, int y2) const noexcept;
+        void drawPoint(int x, int y) const noexcept;
 
-        void DrawSprite(const Sprite &) const noexcept;
+        void drawSprite(const Sprite &) const noexcept;
 
-        Texture make_texture(const std::string & path) const;
-        Texture make_texture(const std::string & path, const Color &transparentColor) const;
+        Texture makeTexture(const std::string & path) const;
+        Texture makeTexture(const std::string & path, const Color &transparentColor) const;
 
         SDL_Renderer* getRawPointer() const noexcept;
         const Window& getWindow() const noexcept;

@@ -52,47 +52,47 @@ namespace AcsGameEngine {
         return *this;
     }
 
-    void Renderer::DrawColor(const Color& color) const noexcept
+    void Renderer::drawColor(const Color& color) const noexcept
     {
         if (color != ColorList::_nocolor) {
             //m_currentColor = color;
-            DrawColor(color.r, color.g, color.b, color.a);
+            drawColor(color.r, color.g, color.b, color.a);
         }
     }
 
-    void Renderer::DrawColor(const Color *color) const noexcept
+    void Renderer::drawColor(const Color *color) const noexcept
     {
-        DrawColor(*color);
+        drawColor(*color);
     }
 
-    void Renderer::DrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha) const noexcept
+    void Renderer::drawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha) const noexcept
     {
         SDL_SetRenderDrawColor(getRawPointer(), r, g, b, alpha);
     }
 
-    void Renderer::Clear(const Color &c) const noexcept
+    void Renderer::clear(const Color &c) const noexcept
     {
-        DrawColor(c);
-        Clear();
+        drawColor(c);
+        clear();
     }
-    void Renderer::Clear() const noexcept
+    void Renderer::clear() const noexcept
     {
         SDL_RenderClear(getRawPointer());
     }
 
-    void Renderer::Present() const noexcept
+    void Renderer::present() const noexcept
     {
         SDL_RenderPresent(getRawPointer());
     }
 
-    void Renderer::DrawRect(const SDL_Rect rect, bool fill) const noexcept
+    void Renderer::drawRect(const SDL_Rect rect, bool fill) const noexcept
     {
         fill ? SDL_RenderFillRect(getRawPointer(), &rect) : SDL_RenderDrawRect(getRawPointer(), &rect);
     }
 
-    void Renderer::DrawRect(const Sprite &sprite, bool fill) const noexcept
+    void Renderer::drawRect(const Sprite &sprite, bool fill) const noexcept
     {
-        DrawRect(sprite.getDestination(), fill);
+        drawRect(sprite.getDestination(), fill);
     }
 
     SDL_Renderer* Renderer::getRawPointer() const noexcept
@@ -105,7 +105,7 @@ namespace AcsGameEngine {
         return m_window;
     }
 
-    void AcsGameEngine::Renderer::DrawSprite(const Sprite& sprite) const noexcept
+    void AcsGameEngine::Renderer::drawSprite(const Sprite& sprite) const noexcept
     {
         const Texture &texture = sprite.getTexture();
         //SDL_RenderCopy(getRawPointer(), texture.getRawPointer(), &(sprite.getSource()), &(sprite.getDestination()));
@@ -120,27 +120,27 @@ namespace AcsGameEngine {
         );
     }
 
-    void Renderer::DrawLine(int x1, int y1, int x2, int y2) const noexcept
+    void Renderer::drawLine(int x1, int y1, int x2, int y2) const noexcept
     {
         SDL_RenderDrawLine(getRawPointer(), x1, y1, x2, y2);
     }
 
-    void Renderer::DrawPoint(int x, int y) const noexcept
+    void Renderer::drawPoint(int x, int y) const noexcept
     {
         SDL_RenderDrawPoint(getRawPointer(), x, y);
     }
 
-    Texture Renderer::make_texture(const std::string& path) const
+    Texture Renderer::makeTexture(const std::string& path) const
     {
-        return make_texture(path, ColorList::_nocolor);
+        return makeTexture(path, ColorList::_nocolor);
     }
 
-    Texture Renderer::make_texture(const std::string & path, const Color &transparentColor) const
+    Texture Renderer::makeTexture(const std::string & path, const Color &transparentColor) const
     {
         SDL_Surface *tmp = IMG_Load(path.c_str());
 
         if (tmp == nullptr) {
-            throw std::invalid_argument{ std::string{ "Unable to load image: "} +path  } ;
+            throw std::invalid_argument{ std::string{ "Unable to load image: "} +path  };
         }
 
         if (transparentColor != ColorList::_nocolor) {
