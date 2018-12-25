@@ -15,7 +15,7 @@ namespace AcsGameEngine {
             inline static const int y{ SDL_WINDOWPOS_CENTERED };
             inline static const int w{ 800 };
             inline static const int h{ 600 };
-            inline static const uint32_t flags{ SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN };
+            inline static const uint32_t flags{ SDL_WINDOW_OPENGL };
         };
     public:
         static constexpr int WINDOW_CENTERED = SDL_WINDOWPOS_CENTERED;
