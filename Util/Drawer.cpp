@@ -111,21 +111,21 @@ namespace AcsGameEngine::Util {
         SDL_Rect sdlRect { x, y, w, h };
 
         if (rect.fill) {
-            m_renderer.DrawColor(rect.innerColor);
-            m_renderer.DrawRect(sdlRect, rect.fill);
+            m_renderer.drawColor(rect.innerColor);
+            m_renderer.drawRect(sdlRect, rect.fill);
         }
 
         if (rect.fill == false || rect.innerColor != rect.borderColor) {
-            m_renderer.DrawColor(rect.borderColor);
-            m_renderer.DrawRect(sdlRect);
+            m_renderer.drawColor(rect.borderColor);
+            m_renderer.drawRect(sdlRect);
         }
     }
 
     void Drawer::DrawPoint(const Point &point) const noexcept
     {
         auto[x, y] = point.origin.getXY();
-        m_renderer.DrawColor(point.borderColor);
-        m_renderer.DrawPoint(x, y);
+        m_renderer.drawColor(point.borderColor);
+        m_renderer.drawPoint(x, y);
     }
 
     void Drawer::DrawLine(const Line &line) const noexcept
@@ -133,8 +133,8 @@ namespace AcsGameEngine::Util {
         auto[x0, y0] = line.origin.getXYint();
         auto[x1, y1] = line.destination.getXYint();
 
-        m_renderer.DrawColor(line.borderColor);
-        m_renderer.DrawLine(x0, y0, x1, y1);
+        m_renderer.drawColor(line.borderColor);
+        m_renderer.drawLine(x0, y0, x1, y1);
     }    
 
     //https://www.youtube.com/watch?v=l-u6uxnOmH0&index=2&list=PLqCJpWy5Fohd6Hg5BW8eAjo5SzQQYl43S
