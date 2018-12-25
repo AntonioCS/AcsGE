@@ -27,7 +27,7 @@ namespace AcsGameEngine::ECS {
             if (state.isVisible()) {
                 if (e.hasComponent<SpriteComponent>())
                 {
-                    renderer.DrawSprite(e.getComponent<SpriteComponent>().getSprite());
+                    renderer.drawSprite(e.getComponent<SpriteComponent>().getSprite());
                 }
                 else {
                     Util::Drawer drawer{renderer};
