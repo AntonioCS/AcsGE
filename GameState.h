@@ -7,15 +7,15 @@
 #include "ECS/System.h"
 #include "Renderer.h"
 #include "Window.h"
+#include "Uses/UsesRenderer.h"
 
 namespace AcsGameEngine
 {
     class GameStateManager;
-    //class Renderer;
-    //class Window;
     class EventManager;
+    class AssetManager;
 
-    class GameState
+    class GameState : public Uses::UsesRenderer
     {
     public:
         GameState() = default;
@@ -27,36 +27,17 @@ namespace AcsGameEngine
         virtual void render();
         virtual std::string getName() const noexcept = 0;
 
-        void setGameStateManager(GameStateManager *gsm)
-        {
-            m_gameStateManager = gsm;
-        }
+        void setGameStateManager(GameStateManager *gsm);
+        GameStateManager *getGameStateManager() const;
 
-        void setRenderer(Renderer *renderer)
-        {
-            m_renderer = renderer;
-        }
+        void setWindow(Window *window);
+        Window *getWindow() const;
 
-        void setWindow(Window *window)
-        {
-            m_window = window;
-        }
+        AssetManager* getAssetManager() const;
+        void setAssetManager(AssetManager* asset_manager);
 
-        GameStateManager *getGameStateManager() const
-        {
-            return m_gameStateManager;
-        }
-
-        Renderer *getRenderer() const
-        {
-            return m_renderer;
-        }
-
-        Window *getWindow() const
-        {
-            return m_window;
-        }
-
+        EventManager *getEventManager() const;
+        void setEventManager(EventManager *eventManager);
     protected:
         using SysPtr = std::unique_ptr<ECS::System>;
         using SysFunc = std::function<void(SysPtr &sys)>;
@@ -72,9 +53,11 @@ namespace AcsGameEngine
             );
         }
     private:
-        GameStateManager *m_gameStateManager;
-        Renderer *m_renderer;
-        Window *m_window;
+        GameStateManager *m_gameStateManager{nullptr};
+        AssetManager *m_assetManager;
+        EventManager *m_eventManager;
+
+        Window *m_window{nullptr};
         std::vector<SysPtr> m_systems;
     };
 }

@@ -37,4 +37,45 @@ namespace AcsGameEngine
         );
         */
     }
+
+    void GameState::setGameStateManager(GameStateManager *gsm)
+    {
+        m_gameStateManager = gsm;
+    }
+
+    GameStateManager *GameState::getGameStateManager() const
+    {
+        return m_gameStateManager;
+    }
+
+
+    void GameState::setWindow(Window *window)
+    {
+        m_window = window;
+    }
+
+    Window *GameState::getWindow() const
+    {
+        return m_window;
+    }
+
+    AssetManager* GameState::getAssetManager() const
+    {
+        return m_assetManager;
+    }
+
+    void GameState::setAssetManager(AssetManager* asset_manager)
+    {
+        m_assetManager = asset_manager;
+    }
+
+    EventManager* GameState::getEventManager() const
+    {
+        return m_eventManager;
+    }
+
+    void GameState::setEventManager(EventManager *eventManager)
+    {
+        m_eventManager = eventManager;
+    }
 }
