@@ -35,9 +35,9 @@ namespace AcsGameEngine::Util {
             return *this;
         }
 
-        void attach(keyType eventName, funcType func) noexcept
+        void attach(keyType eventName, funcType &&func) noexcept
         {
-            m_events[eventName] = func;
+            m_events[eventName] = std::move(func);
         }
 
         template <typename... Args>
