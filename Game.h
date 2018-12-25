@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 
+#include "AssetManager.h"
 #include "EventManager.h"
 #include "ECS/EntityManager.h"
 
@@ -10,6 +11,7 @@ namespace AcsGameEngine {
     class Renderer;
     class Window;
     class GameStateManager;
+    class AssetManager;
 
     class Game
     {
@@ -28,6 +30,7 @@ namespace AcsGameEngine {
         GameStateManager *getGSM();
         EventManager *getEventManager();
         ECS::EntityManager *getEntityManager();
+        AssetManager *getAssetManager();
 
     private:
         struct WindowData
@@ -38,10 +41,11 @@ namespace AcsGameEngine {
         } m_windowData;
 
         std::unique_ptr<Window> m_window;
-        std::unique_ptr <Renderer> m_renderer;
+        std::unique_ptr<Renderer> m_renderer;
         std::unique_ptr<GameStateManager> m_gameStateManager;
         EventManager m_eventManager;
         ECS::EntityManager m_entityManager;
+        AssetManager m_assetManager;
 
         bool m_running{ true };
     };

@@ -48,12 +48,11 @@ namespace AcsGameEngine {
 
         auto[x, y] = m_windowData.windowXY;
         auto[w, h] = m_windowData.windowWH;
-        m_window = std::make_unique<Window>(m_windowData.windowTitle, x, y, w, h);
 
+        m_window = std::make_unique<Window>(m_windowData.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h);
         m_renderer = std::make_unique<Renderer>(*m_window);
-
         m_gameStateManager = std::make_unique<GameStateManager>(*this);
-
+        m_assetManager.setRenderer(&*m_renderer);
     }
 
     void Game::Cleanup()
@@ -82,6 +81,12 @@ namespace AcsGameEngine {
             m_window->showWindow();
         }
 
+        m_eventManager.onQuit(
+            [this](SDL_Event &event) {
+                m_running = false;
+            }
+        );
+
         while (m_running)
         {
             frameTime = timer.elapsed();
@@ -103,12 +108,12 @@ namespace AcsGameEngine {
                 accumulator -= timeStep;
             } while (accumulator >= timeStep);
 
-            m_renderer->Clear(Util::ColorList::white);
+            m_renderer->clear(Util::ColorList::white);
             //m_renderer->Clear();
 
             currentState.render();
 
-            m_renderer->Present();
+            m_renderer->present();
         }
     }
 
@@ -145,5 +150,10 @@ namespace AcsGameEngine {
     ECS::EntityManager *Game::getEntityManager()
     {
         return &m_entityManager;
+    }
+
+    AssetManager* Game::getAssetManager()
+    {
+        return &m_assetManager;
     }
 }
