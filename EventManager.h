@@ -14,6 +14,8 @@ namespace AcsGameEngine {
     class EventManager : public Mediator<uint32_t, eventFunc> {
     public:
         void onMouseClick(eventFunc func);
+        //void onMouseMove(eventFunc func);
+        void onMouseMove(std::function<void(int, int)> func);
 
         void onKeyDown(eventFunc func);
 
