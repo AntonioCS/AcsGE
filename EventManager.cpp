@@ -13,13 +13,13 @@ namespace AcsGameEngine {
     void EventManager::onMouseMove(std::function<void(int, int)> func)
     {
 
-        auto outterFunc = [func = std::move(func)](SDL_Event &event)
+        auto outterFunc = [innerFunc = std::move(func)](SDL_Event &event)
         {
             int x{ 0 };
             int y{ 0 };
             SDL_GetMouseState(&x, &y);
 
-            func(x, y);
+            innerFunc(x, y);
         };
 
         attach(SDL_MOUSEMOTION, std::move(outterFunc));
