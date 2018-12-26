@@ -33,6 +33,6 @@ namespace AcsGameEngine {
         m_currentState->setRenderer(m_game.getRenderer());
         m_currentState->setWindow(m_game.getWindow());
         m_currentState->setAssetManager(m_game.getAssetManager());
-        //m_currentState->set
+        m_currentState->setEventManager(m_game.getEventManager());        
     }
 }
