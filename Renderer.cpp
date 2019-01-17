@@ -104,16 +104,22 @@ namespace AcsGameEngine {
     {
         return m_window;
     }
+    void Renderer::drawSprite(const Sprite *sprite) const noexcept
+    {
+        drawSprite(*sprite);
+    }
 
     void AcsGameEngine::Renderer::drawSprite(const Sprite& sprite) const noexcept
     {
-        const Texture &texture = sprite.getTexture();
+        Texture *texture = sprite.getTexture();
+        auto source = sprite.getSource();
+        auto destination = sprite.getDestination();
         //SDL_RenderCopy(getRawPointer(), texture.getRawPointer(), &(sprite.getSource()), &(sprite.getDestination()));
         SDL_RenderCopyEx(
             getRawPointer(),
-            texture.getRawPointer(),
-            &(sprite.getSource()),
-            &(sprite.getDestination()),
+            texture->getRawPointer(),
+            &source,
+            &destination,
             sprite.angle(),
             nullptr,//&(sprite.centerPoint()), @TODO - Fix this. If the angle > 0 then this messes up the whole thing unless it's null
             sprite.flip()

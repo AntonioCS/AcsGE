@@ -39,6 +39,7 @@ namespace AcsGameEngine {
         void drawLine(int x1, int y1, int x2, int y2) const noexcept;
         void drawPoint(int x, int y) const noexcept;
 
+        void drawSprite(const Sprite *) const noexcept;
         void drawSprite(const Sprite &) const noexcept;
 
         Texture makeTexture(const std::string & path) const;
