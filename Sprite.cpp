@@ -5,7 +5,7 @@
 
 namespace AcsGameEngine {
 
-    Sprite::Sprite(const Texture &texture, SDL_Rect source) : m_texture(texture), m_source(source)
+    Sprite::Sprite(Texture *texture, SDL_Rect source) : m_texture(texture), m_source(source)
     {
         m_destination.w = m_source.w;
         m_destination.h = m_source.h;
@@ -126,7 +126,7 @@ namespace AcsGameEngine {
     {
         return m_offSet;
     }
-    const Texture & Sprite::getTexture() const noexcept
+    Texture *Sprite::getTexture() const
     {
         return m_texture;
     }

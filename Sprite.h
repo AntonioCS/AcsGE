@@ -9,16 +9,9 @@ namespace AcsGameEngine {
 
 
     class Sprite {
-        const Texture & m_texture;
-        SDL_Rect m_source{ 0, 0, 0, 0 };
-        SDL_Rect m_destination{ 0, 0, 0, 0 };
-        double m_angle{ 0 };
-        SDL_RendererFlip m_flip{ SDL_FLIP_NONE };
-        SDL_Point m_center;
-        std::pair<int, int> m_offSet;
-
     public:
-        Sprite(const Texture &texture, SDL_Rect);
+        Sprite() = default;
+        Sprite(Texture *texture, SDL_Rect);
         Sprite(Sprite&& other) noexcept;
         ~Sprite() = default;
 
@@ -52,7 +45,15 @@ namespace AcsGameEngine {
         void setOffSet(int x, int y) noexcept;
         std::pair<int, int> getOffSet() const noexcept;
 
-        const Texture& getTexture() const noexcept;
+        Texture *getTexture() const;
+    private:
+        Texture *m_texture;
+        SDL_Rect m_source{ 0, 0, 0, 0 };
+        SDL_Rect m_destination{ 0, 0, 0, 0 };
+        double m_angle{ 0 };
+        SDL_RendererFlip m_flip{ SDL_FLIP_NONE };
+        SDL_Point m_center;
+        std::pair<int, int> m_offSet;
     };
 }  // namespace AcsGameEngine
 #endif /* SPRITE_H */
