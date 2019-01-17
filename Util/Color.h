@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 namespace AcsGameEngine::Util {
 
@@ -9,7 +10,7 @@ namespace AcsGameEngine::Util {
         int g{ -1 };
         int b{ -1 };
 
-        char *hex = __nullptr;
+        char *hex = nullptr;
 
         //alpha
         const unsigned int maxAlphaValue{ 255 };
@@ -19,6 +20,7 @@ namespace AcsGameEngine::Util {
         Color(int r, int g, int b);
         Color(int r, int g, int b, const char *hex);
         Color(int r, int g, int b, int alpha);
+        Color(const std::string &hex);
         Color(const Color &other);
 
         Color &operator=(const Color &other);
