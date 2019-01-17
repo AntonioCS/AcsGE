@@ -13,6 +13,9 @@ namespace AcsGameEngine  {
     class AssetManager : public Uses::UsesRenderer
     {
     public:
+        AssetManager() = default;
+        AssetManager(Renderer *r);
+
         bool hasTexture(const std::string &name) const;
         Texture *makeTexture(const std::string &texturePath);
         Texture *makeTexture(const std::string &name, const std::string &texturePath);
@@ -20,6 +23,7 @@ namespace AcsGameEngine  {
 
         bool hasSprite(const std::string &name) const;
         void makeSprites(const std::string &textureName, const std::vector<std::pair<std::string, SDL_Rect>>& nameAndCoords);
+        Sprite *getSprite(const std::string &name);
 
     private:
         std::unordered_map<std::string, Texture> m_textures;

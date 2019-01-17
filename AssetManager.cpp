@@ -4,6 +4,10 @@
 #include <algorithm> //std::for_each
 
 namespace AcsGameEngine {
+    AssetManager::AssetManager(Renderer* r)
+    {
+        this->setRenderer(r);
+    }
 
     bool AssetManager::hasTexture(const std::string& name) const
     {
@@ -21,14 +25,13 @@ namespace AcsGameEngine {
             m_textures.insert({ name,  getRenderer()->makeTexture(texturePath) });
             return &m_textures[name];
         }
-        
-        throw std::exception("Texture name exists");
+
+        return getTexture(name);
     }
 
     Texture* AssetManager::getTexture(const std::string& name)
     {
-        if (hasTexture(name))
-        {
+        if (hasTexture(name)) {
             return &m_textures[name];
         }
 
@@ -55,7 +58,7 @@ namespace AcsGameEngine {
                 auto[name, coords] = pair;
 
                 if (!this->hasSprite(name)) {
-                    this->m_sprites.insert({ pair.first, Sprite{*texture, coords} });
+                    this->m_sprites.insert({ pair.first, Sprite(texture, coords) });
                 }
                 else {
                     throw std::runtime_error{
@@ -64,6 +67,14 @@ namespace AcsGameEngine {
                 }
             }
         );
-    
+    }
+
+    Sprite* AssetManager::getSprite(const std::string& name)
+    {
+        if (hasSprite(name)) {
+            return &m_sprites[name];
+        }
+
+        return nullptr;
     }
 }
