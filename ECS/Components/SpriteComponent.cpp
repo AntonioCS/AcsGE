@@ -3,12 +3,10 @@
 #include <SDL2/SDL.h>
 
 namespace AcsGameEngine::ECS {
-    SpriteComponent::SpriteComponent(Texture &texture, AcsGameEngine::Util::Shapes::Rectangle rect, int x, int y)
-        : m_sprite(texture, SDL_Rect{ static_cast<int>(rect.origin.x), static_cast<int>(rect.origin.y), static_cast<int>(rect.dimensions.width), static_cast<int>(rect.dimensions.height) })
+    SpriteComponent::SpriteComponent(Sprite *s) : m_sprite(s)
     {
-        getSprite().setDestinationXY(x, y);
     }
-    Sprite & SpriteComponent::getSprite()
+    Sprite *SpriteComponent::getSprite()
     {
         return m_sprite;
     }
