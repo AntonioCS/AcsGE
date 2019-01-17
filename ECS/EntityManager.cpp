@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 namespace AcsGameEngine::ECS {
-    Entity & EntityManager::make_entity()
+    Entity & EntityManager::makeEntity()
     {
         return *(m_entities.emplace_back(new Entity));
     }

@@ -13,7 +13,7 @@ namespace AcsGameEngine::ECS {
         EntityManager() = default;
         ~EntityManager() = default;
 
-        Entity &make_entity();
+        Entity &makeEntity();
 
         template<typename... Types>
         std::vector<std::reference_wrapper<Entity>> findByComponent() {
