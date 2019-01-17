@@ -16,13 +16,14 @@ namespace AcsGameEngine {
 
     Animation::Animation(
         const std::string name,
-        const Texture & texture) : m_name(name), m_texture(texture)
+        Texture & texture) : m_name(name), m_texture(texture)
+    //, m_duration(0ms)
     {
     }
 
     Animation::Animation(
         const std::string name,
-        const Texture &texture,
+        Texture &texture,
         SDL_Rect start,
         unsigned totalFrames,
         SDL_Rect moveBy,
@@ -30,7 +31,7 @@ namespace AcsGameEngine {
     ) : Animation(name, texture)
     {
         while (totalFrames--) {
-            m_frames.emplace_back(Sprite{ m_texture, start }, duration);
+            m_frames.emplace_back(Sprite(&m_texture , start), duration);
 
             start.x += moveBy.x;
             start.y += moveBy.y;
@@ -46,7 +47,7 @@ namespace AcsGameEngine {
 
     void Animation::add(SDL_Rect rect, std::chrono::milliseconds duration)
     {
-        m_frames.emplace_back(Sprite{ m_texture, rect }, duration);
+        m_frames.emplace_back(Sprite{&m_texture, rect }, duration);
     }
     void Animation::play()
     {
