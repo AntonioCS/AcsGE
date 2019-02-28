@@ -1,8 +1,7 @@
 #include "Timer.h"
-#include <iostream>
+#include <stdexcept>
 
 namespace AcsGameEngine::Util {
-
     void Timer::start()
     {
         m_started = true;
@@ -18,21 +17,20 @@ namespace AcsGameEngine::Util {
     {
         if (isStarted()) {
             m_startTime = clock::now();
-        } 
+        }
     }
 
-    Timer::ms Timer::elapsed() const noexcept
+    Timer::ms Timer::elapsed() const
     {
-        if (isStarted()) {            
-            const auto elapsed = std::chrono::duration_cast<ms>(clock::now() - m_startTime);
-
-            return elapsed;
+        if (isStarted()) {
+            return Timer::ms{ clock::now() - m_startTime };
         }
 
-        return std::chrono::milliseconds{ 0 };
+
+        throw std::logic_error{ "Timer not started" };
     }
 
-    bool Timer::isStarted() const noexcept 
+    bool Timer::isStarted() const noexcept
     {
         return m_started;
     }

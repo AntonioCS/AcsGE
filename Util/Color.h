@@ -3,7 +3,6 @@
 #include <string>
 
 namespace AcsGameEngine::Util {
-
     class Color {
     public:
         int r{ -1 };
@@ -14,8 +13,8 @@ namespace AcsGameEngine::Util {
 
         //alpha
         const unsigned int maxAlphaValue{ 255 };
-        unsigned int a{ maxAlphaValue };               
-        
+        unsigned int a{ maxAlphaValue };
+
         Color() = default;
         Color(int r, int g, int b);
         Color(int r, int g, int b, const char *hex);

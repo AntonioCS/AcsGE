@@ -9,7 +9,7 @@ namespace AcsGameEngine::Util::Shapes {
     class Shape {
     public:
         Vector2D origin;
-        Color borderColor{ ColorList::black };
+        Color borderColor{ ColorList::_nocolor };
         Color innerColor{ ColorList::_nocolor };
         bool fill{ false };
 

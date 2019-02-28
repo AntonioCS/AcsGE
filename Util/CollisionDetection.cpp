@@ -12,7 +12,7 @@ namespace AcsGameEngine::Util {
     using AcsGameEngine::Util::Shapes::Rectangle;
 
     //http://lazyfoo.net/tutorials/SDL/27_collision_detection/index.php
-    bool CollisionDetection::checkCollision(const Rectangle &rectA, const Rectangle &rectB) const noexcept
+    bool CollisionDetection::checkCollision(const Rectangle &rectA, const Rectangle &rectB) noexcept
     {
         return !(
             rectA.bottomSide() <= rectB.origin.y ||
@@ -33,7 +33,7 @@ namespace AcsGameEngine::Util {
     }
 
     //http://lazyfoo.net/tutorials/SDL/29_circular_collision_detection/index.php
-    bool CollisionDetection::checkCollision(const Circle &circleA, const Circle &circleB) const noexcept
+    bool CollisionDetection::checkCollision(const Circle &circleA, const Circle &circleB) noexcept
     {
         int totalRadiusSquared = circleA.radius + circleB.radius;
         totalRadiusSquared = totalRadiusSquared * totalRadiusSquared;
@@ -41,7 +41,7 @@ namespace AcsGameEngine::Util {
         return (distanceSquared(circleA.origin.getXYint(), circleB.origin.getXYint()) < (totalRadiusSquared));
     }
 
-    bool CollisionDetection::checkCollision(const Rectangle &rect, const Circle &circle) const noexcept
+    bool CollisionDetection::checkCollision(const Rectangle &rect, const Circle &circle) noexcept
     {
         //Closest point on collision box        
         auto[cX, cY] = circle.origin.getXYint();
@@ -65,13 +65,13 @@ namespace AcsGameEngine::Util {
         //If the closest point is inside the circle
         return (distanceSquared(circle.origin.getXYint(), { cX, cY }) < circle.radius.squared());        
     }
-    bool CollisionDetection::checkCollision(const Shapes::Circle &circle, const Shapes::Rectangle &rect) const noexcept
+    bool CollisionDetection::checkCollision(const Shapes::Circle &circle, const Shapes::Rectangle &rect) noexcept
     {
         return checkCollision(rect, circle);
     }
 
     //https://www.topcoder.com/community/data-science/data-science-tutorials/geometry-concepts-line-intersection-and-its-applications/#line_line_intersection
-    bool CollisionDetection::checkCollision(const Shapes::Line &lineA, const Shapes::Line &lineB) const noexcept
+    bool CollisionDetection::checkCollision(const Shapes::Line &lineA, const Shapes::Line &lineB) noexcept
     {
         const auto[lineA_x0, lineA_y0] = lineA.origin.getXYint();
         const auto[lineA_x1, lineA_y1] = lineA.destination.getXYint();

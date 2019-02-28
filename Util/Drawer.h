@@ -5,7 +5,6 @@ namespace AcsGameEngine {
 }
 
 namespace AcsGameEngine::Util {
-
     namespace Shapes {
         class Shape;
         class Rectangle;
@@ -14,7 +13,7 @@ namespace AcsGameEngine::Util {
         class Point;
         class Triangle;
     }
-    
+
     using Shapes::Circle;
     using Shapes::Rectangle;
     using Shapes::Point;
@@ -42,5 +41,4 @@ namespace AcsGameEngine::Util {
         void DrawShape(const Line &) const noexcept;
         void DrawShape(const Triangle &) const noexcept;
     };
-
 }

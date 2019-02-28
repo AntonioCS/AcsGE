@@ -11,10 +11,10 @@ namespace AcsGameEngine::Util {
 
     class CollisionDetection {        
     public:
-        bool checkCollision(const Shapes::Rectangle &, const Shapes::Rectangle &) const noexcept;
-        bool checkCollision(const Shapes::Circle &, const Shapes::Circle &) const noexcept;
-        bool checkCollision(const Shapes::Rectangle &, const Shapes::Circle &) const noexcept;
-        bool checkCollision(const Shapes::Circle &, const Shapes::Rectangle &) const noexcept;
-        bool checkCollision(const Shapes::Line &, const Shapes::Line &) const noexcept;
+        static bool checkCollision(const Shapes::Rectangle &, const Shapes::Rectangle &) noexcept;
+        static bool checkCollision(const Shapes::Circle &, const Shapes::Circle &) noexcept;
+        static bool checkCollision(const Shapes::Rectangle &, const Shapes::Circle &) noexcept;
+        static bool checkCollision(const Shapes::Circle &, const Shapes::Rectangle &) noexcept;
+        static bool checkCollision(const Shapes::Line &, const Shapes::Line &) noexcept;
     };
 }

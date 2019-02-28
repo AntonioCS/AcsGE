@@ -4,20 +4,20 @@ namespace AcsGameEngine::Util::Shapes {
 
     double Rectangle::area() const noexcept
     {
-        return dimensions.width * dimensions.height;
+        return size.x * size.y;
     }
 
     float Rectangle::rightSide() const noexcept
     {
-        return origin.getX() + dimensions.width;
+        return origin.getX() + size.x;
     }
 
     float Rectangle::bottomSide() const noexcept
     {
-        return origin.getY() + dimensions.height;
+        return origin.getY() + size.y;
     }
 
-    Rectangle::Rectangle(Vector2D v, Dimensions d) : Shape::Shape(v), dimensions(d)
+    Rectangle::Rectangle(Vector2D v, Vector2D d) : Shape::Shape(v), size(d)
     {
     }
 }

@@ -106,7 +106,7 @@ namespace AcsGameEngine::Util {
     void Drawer::DrawRect(const Rectangle &rect) const noexcept
     {
         auto[x, y] = rect.origin.getXYint();
-        auto[w, h] = rect.dimensions.getWHint();
+        auto[w, h] = rect.size.getXYint();
 
         SDL_Rect sdlRect { x, y, w, h };
 

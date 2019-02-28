@@ -1,7 +1,6 @@
 #include "Color.h"
 
 namespace AcsGameEngine::Util {
-
     bool Color::operator!=(const Color &rhs) const {
         return !(operator==(rhs));
     }
@@ -33,7 +32,6 @@ namespace AcsGameEngine::Util {
 
     Color::Color(const std::string &hex)
     {
-
         if (hex.size() < 6) {
             throw "Wrong size";
         }

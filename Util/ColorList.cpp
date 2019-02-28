@@ -1,7 +1,6 @@
 #include "ColorList.h"
 
 namespace AcsGameEngine::Util {
-
     const Color ColorList::_nocolor{};
     const Color ColorList::indian_red(176, 23, 31, "#B0171F");
     const Color ColorList::crimson(220, 20, 60, "#DC143C");
