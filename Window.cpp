@@ -21,14 +21,14 @@ namespace AcsGameEngine {
 
     int Window::getWidth() const noexcept
     {
-        const auto size = getSize();
-        return size.first;
+        const auto[w, h] = getSize().getWHint();
+        return w;
     }
 
     int Window::getHeight() const noexcept
     {
-        const auto size = getSize();
-        return size.second;
+        const auto [w,h] = getSize().getWHint();
+        return h;
     }
 
     std::string Window::getTitle() const noexcept
@@ -75,13 +75,19 @@ namespace AcsGameEngine {
         return { x, y };
     }
 
-    std::pair<int, int> Window::getSize() const noexcept
+    Util::Size Window::getSize() const noexcept
     {
         int w;
         int h;
 
         SDL_GetWindowSize(getRawPointer(), &w, &h);
         return { w, h };
+    }
+
+    Util::Vector2D Window::getCenter() const
+    {
+        const auto[w, h] = getSize();
+        return { w/2.f, h/2.f};
     }
 
     SDL_Window *Window::createWindowPointer(const std::string& title, int x, int y, int w, int h, uint32_t flags)

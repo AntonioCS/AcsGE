@@ -4,6 +4,9 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include "Util/Vector2D.h"
+#include "Util/Size.h"
+
 
 namespace AcsGameEngine {
     //https://wiki.libsdl.org/SDL_CreateWindow
@@ -37,7 +40,9 @@ namespace AcsGameEngine {
         int getY() const noexcept;
 
         std::pair<int, int> getPosition() const noexcept;
-        std::pair<int, int> getSize() const noexcept;
+        Util::Size getSize() const noexcept;
+
+        Util::Vector2D getCenter() const;
 
         int getWidth() const noexcept;
         int getHeight() const noexcept;
