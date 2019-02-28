@@ -27,16 +27,16 @@ namespace AcsGameEngine {
         void setSourceWH(int, int);
         void setDestinationWH(int, int);
 
-        void setCenter();
+        //void setCenter();
 
-        void angle(double);
-        double angle() const noexcept;
+        //void angle(double);
+        //double angle() const noexcept;
 
-        void flip(SDL_RendererFlip);
-        SDL_RendererFlip flip() const noexcept;
+        //void flip(SDL_RendererFlip);
+        //SDL_RendererFlip flip() const noexcept;
 
-        void centerPoint(SDL_Point);
-        SDL_Point centerPoint() const noexcept;
+        //void centerPoint(SDL_Point);
+        //SDL_Point centerPoint() const noexcept;
 
         std::pair<int, int> getDestinationPoint() const noexcept;
         SDL_Rect getDestination() const noexcept;

@@ -85,7 +85,7 @@ namespace AcsGameEngine {
     double Sprite::angle() const noexcept {
         return m_angle;
     }
-
+    /*
     void Sprite::flip(SDL_RendererFlip state) {
         m_flip = state;
     }
@@ -103,7 +103,7 @@ namespace AcsGameEngine {
     {
         return m_center;
     }
-
+    */
     std::pair<int, int> Sprite::getDestinationPoint() const noexcept
     {
         return { m_destination.x, m_destination.y };
