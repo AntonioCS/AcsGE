@@ -4,8 +4,8 @@
 #include <exception>
 #include "Entity.h"
 
-namespace AcsGameEngine
-{
+namespace AcsGameEngine {
+    class Window;
     class Renderer;
 }
 
@@ -17,27 +17,33 @@ namespace AcsGameEngine::ECS {
     class System {
     protected:
         VecEntityRef m_vecRef;
-        EntityManager *m_entityManager = nullptr;
     public:
         System() = default;
         virtual ~System() = default;
 
-        void setEntityManager(EntityManager *em)
-        {
-            m_entityManager = em;
-        }
+        void setEntityManager(EntityManager* em);
+        EntityManager* getEntityManager() const;
 
-        EntityManager *getEntityManager() const
-        {
-            if (m_entityManager == nullptr)
-            {
-                throw std::runtime_error{ "Entity Manager not set" };
-            }
-            return m_entityManager;
-        }
+        void setRenderer(Renderer *);
+        Renderer *getRenderer() const;
+
+        void setWindow(Window *);
+        Window *getWindow() const;
 
         virtual void init() = 0;
         virtual void update(std::chrono::milliseconds) = 0;
-        virtual void render(Renderer &renderer) = 0;
+        virtual void render() = 0;
+    protected:
+        template <typename T>
+        static T msConvert(std::chrono::milliseconds ms) noexcept
+        {
+            return std::chrono::duration_cast<
+                std::chrono::duration<T>
+            >(ms).count();
+        };
+    private:
+        Renderer *m_renderer = nullptr;
+        Window *m_window = nullptr;
+        EntityManager *m_entityManager = nullptr;
     };
 }
