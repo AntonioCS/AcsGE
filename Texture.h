@@ -4,15 +4,14 @@
 #include <memory>
 
 namespace AcsGameEngine {
-	class Texture {
-	public:
+    class Texture {
+    public:
         Texture();
-		Texture(SDL_Texture*);
+        Texture(SDL_Texture*);
 
-		SDL_Texture* getRawPointer() const;
+        SDL_Texture* getRawPointer() const;
 
-	private:
-		std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> m_texturePtr;
-	};
+    private:
+        std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> m_texturePtr;
+    };
 } // namespace AcsGameEngine
-
