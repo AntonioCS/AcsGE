@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Shape.h"
-#include "../Dimensions.h"
+#include "../Size.h"
 
 namespace AcsGameEngine::Util::Shapes {
 
@@ -9,9 +9,9 @@ namespace AcsGameEngine::Util::Shapes {
     {
     public:
         Rectangle() = default;
-        Rectangle(Vector2D, Vector2D);
+        Rectangle(Vector2D, Size);
 
-        Vector2D size;
+        Size size;
 
         double area() const noexcept override;
         float rightSide() const noexcept;
