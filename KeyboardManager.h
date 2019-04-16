@@ -24,7 +24,6 @@ namespace AcsGameEngine {
 
         ~KeyboardManager() = default;
 
-
         static KeyboardManager& getInstance();
 
         void onKeyDown(SDL_Event& e);
