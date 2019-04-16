@@ -21,13 +21,13 @@ namespace AcsGameEngine {
 
     int Window::getWidth() const noexcept
     {
-        const auto[w, h] = getSize().getWHint();
+        const auto[w, h] = getSize();
         return w;
     }
 
     int Window::getHeight() const noexcept
     {
-        const auto [w,h] = getSize().getWHint();
+        const auto[w, h] = getSize();
         return h;
     }
 
