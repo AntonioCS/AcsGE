@@ -16,13 +16,23 @@ namespace AcsGameEngine::Util {
         return c;
     }
 
-    Color::Color(int r, int g, int b) : r(r), b(b), g(g)
+    bool Color::noColor() const noexcept
+    {
+        return (r == -1 && g == -1 && b == -1);
+    }
+
+    Color::Color(int r, int g, int b) : r(r), g(g), b(b)
     {
     }
 
-    Color::Color(int r, int g, int b, const char *hex) : Color(r, g, b)
+    Color::Color(int r, int g, int b, char *h) : Color(r, g, b)
     {
-        hex = hex;
+        hex = h;
+    }
+
+    Color::Color(int r, int g, int b, const char*h) : Color(r, g, b)
+    {
+        hex = h;
     }
 
     Color::Color(int r, int g, int b, int alpha) : Color(r, g, b, "")

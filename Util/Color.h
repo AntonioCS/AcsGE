@@ -9,7 +9,7 @@ namespace AcsGameEngine::Util {
         int g{ -1 };
         int b{ -1 };
 
-        char *hex = nullptr;
+        std::string hex;
 
         //alpha
         const unsigned int maxAlphaValue{ 255 };
@@ -17,7 +17,9 @@ namespace AcsGameEngine::Util {
 
         Color() = default;
         Color(int r, int g, int b);
-        Color(int r, int g, int b, const char *hex);
+        Color(int r, int g, int b, char *);
+        Color(int r, int g, int b, const char *);
+        //Color(int r, int g, int b, const char );
         Color(int r, int g, int b, int alpha);
         Color(const std::string &hex);
         Color(const Color &other);
@@ -27,5 +29,6 @@ namespace AcsGameEngine::Util {
         bool operator==(const Color &rhs) const;
 
         Color alphaPercentage(unsigned int value) const noexcept;
+        bool noColor() const noexcept;
     };
 }
