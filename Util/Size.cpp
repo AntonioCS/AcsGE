@@ -60,9 +60,45 @@ namespace AcsGameEngine::Util {
         return *this;
     }
 
+    Size& Size::operator*=(const Size& rhs)
+    {
+        w *= rhs.w;
+        h *= rhs.h;
+
+        return *this;
+    }
+
+    Size& Size::operator/=(const Size& rhs)
+    {
+        w /= rhs.w;
+        h /= rhs.h;
+
+        return *this;
+    }
+
+    int Size::getWint() const noexcept
+    {
+        return static_cast<int>(w);
+    }
+
+    int Size::getHint() const noexcept
+    {
+        return static_cast<int>(h);
+    }
+
+    std::pair<int, int> Size::getWHint() const noexcept
+    {
+        return {getWint(), getHint()};
+    }
+
     Size Size::operator*(const float &v) const noexcept
     {
         return { w * v, h * v };
+    }
+
+    Size Size::operator*(const Size& v) const noexcept
+    {
+        return { w * v.w, h * v.h };
     }
 
     Size Size::operator/(const float &v) const noexcept
