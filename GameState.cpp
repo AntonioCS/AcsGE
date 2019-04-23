@@ -1,42 +1,84 @@
-#include "Game.h"
+
 #include "GameState.h"
+
+#include "Game.h"
+#include "Window.h"
 #include "GameStateManager.h"
-#include "Renderer.h"
-#include "ECS/System.h"
 
 namespace AcsGameEngine
 {
-    void GameState::init()
+    void GameState::preUpdate(ms deltaTime)
     {
-        loopAction(
-            [](SysPtr &sys) {
-                sys.get()->init();
-            }
-        );
+        getSystemManager().preUpdate(deltaTime);
     }
 
-    void GameState::handleEvents()
+    void GameState::update(ms deltaTime)
     {
+        getSystemManager().update(deltaTime);
     }
 
-    void GameState::update(std::chrono::milliseconds deltaTime)
+    void GameState::postUpdate(ms deltaTime)
     {
-        loopAction(
-            [&deltaTime](SysPtr &sys) {
-                sys.get()->update(deltaTime);
-            }
-        );
+        getSystemManager().postUpdate(deltaTime);
+    }
+
+    void GameState::preRender()
+    {
+        getSystemManager().preRender();
     }
 
     void GameState::render()
     {
-     /*   loopAction(
-            [&renderer](SysPtr &sys) {
-                sys.get()->render(renderer);
-            }
-        );
-        */
+        getSystemManager().render();
     }
+
+    void GameState::postRender()
+    {
+        getSystemManager().postRender();
+    }
+
+    void GameState::onLoad()
+    {
+        init();
+        getSystemManager().init();
+
+        m_hasBeenInit = true;
+    }
+
+    void GameState::onUnload()
+    {
+        cleanup();
+        //unload events and assets
+    }
+
+    void GameState::changeState(std::string newState)
+    {
+        m_newState = newState;
+    }
+
+    bool GameState::hasChangeToNewState() const noexcept
+    {
+        return !m_newState.empty();
+    }
+
+    std::string GameState::getNewStateToChange()
+    {
+        auto local = m_newState;
+        m_newState.clear();
+        return local;
+    }
+
+#pragma region
+
+    ECS::EntityManager& GameState::getEntityManager()
+    {
+        return m_entityManager;
+    }
+
+    ECS::SystemManager &GameState::getSystemManager()
+    {
+        return m_systemManager;
+    } 
 
     void GameState::setGameStateManager(GameStateManager *gsm)
     {
@@ -78,4 +120,5 @@ namespace AcsGameEngine
     {
         m_eventManager = eventManager;
     }
+#pragma endregion Getters and Setters
 }

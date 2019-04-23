@@ -1,63 +1,70 @@
 ﻿#pragma once
 
 #include <chrono>
-#include <functional>
-#include <algorithm>
 
-#include "ECS/System.h"
-#include "Renderer.h"
-#include "Window.h"
 #include "Uses/UsesRenderer.h"
+#include "ECS/EntityManager.h"
+#include "ECS/SystemManager.h"
 
 namespace AcsGameEngine
 {
     class GameStateManager;
     class EventManager;
     class AssetManager;
+    class Window;
 
     class GameState : public Uses::UsesRenderer
     {
+    protected:
+        using ms = std::chrono::milliseconds;
     public:
         GameState() = default;
         virtual ~GameState() = default;
 
-        virtual void init();
-        virtual void handleEvents();
-        virtual void update(std::chrono::milliseconds deltaTime);
-        virtual void render();
+        virtual void init() = 0;
+        virtual void cleanup() = 0;
         virtual std::string getName() const noexcept = 0;
 
+        //virtual void handleEvents();
+
+        virtual void preUpdate(ms deltaTime);
+        virtual void update(ms deltaTime);
+        virtual void postUpdate(ms deltaTime);
+
+        virtual void preRender();
+        virtual void render();
+        virtual void postRender();
+
+        virtual void onLoad();
+        virtual void onUnload();
+
+        void changeState(std::string newState);
+        bool hasChangeToNewState() const noexcept;
+        std::string getNewStateToChange();
+
         void setGameStateManager(GameStateManager *gsm);
-        GameStateManager *getGameStateManager() const;
-
         void setWindow(Window *window);
-        Window *getWindow() const;
-
-        AssetManager* getAssetManager() const;
         void setAssetManager(AssetManager* asset_manager);
-
-        EventManager *getEventManager() const;
         void setEventManager(EventManager *eventManager);
-    protected:
-        using SysPtr = std::unique_ptr<ECS::System>;
-        using SysFunc = std::function<void(SysPtr &sys)>;
+        GameStateManager *getGameStateManager() const;
+        Window *getWindow() const;
+        AssetManager* getAssetManager() const;
+        EventManager *getEventManager() const;
 
-        GameStateManager &getGSM() const noexcept;
+        ECS::EntityManager &getEntityManager();
+        ECS::SystemManager &getSystemManager();
 
-        void loopAction(SysFunc func)
-        {
-            std::for_each(
-                std::begin(m_systems),
-                std::end(m_systems),
-                func
-            );
-        }
     private:
         GameStateManager *m_gameStateManager{nullptr};
-        AssetManager *m_assetManager;
-        EventManager *m_eventManager;
-
+        AssetManager *m_assetManager{nullptr};
+        EventManager *m_eventManager{nullptr};
         Window *m_window{nullptr};
-        std::vector<SysPtr> m_systems;
+
+    protected:
+        ECS::EntityManager m_entityManager;
+        ECS::SystemManager m_systemManager;
+        std::string m_newState{};
+        bool m_hasBeenInit{ false };
+
     };
 }
