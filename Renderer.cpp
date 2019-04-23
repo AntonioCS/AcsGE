@@ -1,18 +1,20 @@
-#include <exception>
 
 #include "Renderer.h"
 
-#include <SDL2/SDL_image.h>
-
 #include "Sprite.h"
+#include "Sprite2.h"
 #include "Texture.h"
 #include "Window.h"
 #include "Util/Color.h"
 #include "Util/ColorList.h"
+#include "Util/Shapes/Rectangle.h"
+#include "Font.h"
+
+#include <SDL2/SDL_image.h>
+#include <algorithm>
 
 
 namespace AcsGameEngine {
-
     using Util::Color;
     using Util::ColorList;
 
@@ -20,10 +22,9 @@ namespace AcsGameEngine {
         : m_renderer(createRendererPointer(window.getRawPointer(), index, flags), SDL_DestroyRenderer)
         , m_window(window)
     {
-
         if (m_renderer == nullptr) {
             throw std::runtime_error{
-                std::string{ "Unable to initialize renderer: " } + std::string{ SDL_GetError() }
+                std::string{ "Unable to initialize renderer: " } +std::string{ SDL_GetError() }
             };
         }
 
@@ -39,7 +40,6 @@ namespace AcsGameEngine {
     Renderer & Renderer::operator=(const Renderer & other)
     {
         if (&other != this) {
-
         }
         return *this;
     }
@@ -47,7 +47,6 @@ namespace AcsGameEngine {
     Renderer & Renderer::operator=(Renderer && other) noexcept
     {
         if (&other != this) {
-
         }
         return *this;
     }
@@ -104,6 +103,26 @@ namespace AcsGameEngine {
     {
         return m_window;
     }
+
+    void internalDrawSprite(SDL_Renderer *renderer, Sprite &sprite)
+    {
+        Texture *texture = sprite.getTexture();
+        auto source = sprite.getSource();
+        auto destination = sprite.getDestination();
+        SDL_RenderCopyEx(
+            renderer,
+            texture->getRawPointer(),
+            &source,
+            &destination,
+            160.0,
+            //sprite.angle(),
+            nullptr,//&(sprite.centerPoint()), @TODO - Fix this. If the angle > 0 then this messes up the whole thing unless it's null
+            SDL_FLIP_NONE
+            //sprite.flip()
+        );
+    }
+
+
     void Renderer::drawSprite(const Sprite *sprite) const noexcept
     {
         drawSprite(*sprite);
@@ -120,11 +139,111 @@ namespace AcsGameEngine {
             texture->getRawPointer(),
             &source,
             &destination,
-            sprite.angle(),
+            0,
+            //sprite.angle(),
             nullptr,//&(sprite.centerPoint()), @TODO - Fix this. If the angle > 0 then this messes up the whole thing unless it's null
-            sprite.flip()
+            SDL_FLIP_NONE
+            //sprite.flip()
         );
     }
+
+    void Renderer::drawSprite(const Sprite2* sprite, const SpriteFlipState state, SpriteCenterPoint centerPoint,
+        double rotation, int alphaPercentage, const Util::Size scale) const noexcept
+    {
+        drawSprite(
+            sprite, 
+            sprite->getDestination(),
+            state, centerPoint,
+            rotation, alphaPercentage,scale
+        );
+    }
+
+    void Renderer::drawSprite(
+        const Sprite2* sprite, 
+        const Util::Shapes::Rectangle& destination, 
+        const SpriteFlipState flipState,
+        SpriteCenterPoint centerPoint, 
+        double rotation, 
+        int alphaPercentage,
+        const Util::Size scale) const noexcept
+    {
+        constexpr int alphaMax{ 255 };
+
+        auto[spriteX, spriteY] = sprite->getPosition().getXYint();
+        auto[spriteW, spriteH] = sprite->getSize().getWHint();
+        SDL_Rect source = { spriteX, spriteY, spriteW, spriteH };
+
+        auto scaledDest = destination.size * scale;
+
+        auto[destX, destY] = destination.origin.getXYint();
+        auto[destW, destH] = scaledDest.getWHint();
+        SDL_Rect dest = { destX, destY, destW, destH };
+
+        SDL_Point cPoint;
+
+        switch (centerPoint) {
+            case SpriteCenterPoint::TOP_LEFT:
+                cPoint.x = 0;
+                cPoint.y = 0;
+            break;
+            case SpriteCenterPoint::TOP_CENTER:
+                cPoint.x = destW / 2;;
+                cPoint.y = 0;
+            break;
+            case SpriteCenterPoint::TOP_RIGHT:
+                cPoint.x = destW;
+                cPoint.y = 0;
+            break;
+            case SpriteCenterPoint::MIDDLE_LEFT:
+                cPoint.x = 0;
+                cPoint.y = destH / 2;
+            break;
+            case SpriteCenterPoint::MIDDLE_CENTER:
+                //a nullptr will be used
+
+            break;
+            case SpriteCenterPoint::MIDDLE_RIGHT:
+                cPoint.x = destW / 2;
+                cPoint.y = destH / 2;
+            break;
+            case SpriteCenterPoint::BOTTOM_LEFT:
+                cPoint.x = 0;
+                cPoint.y = destH;
+            break;
+            case SpriteCenterPoint::BOTTOM_CENTER:
+                cPoint.x = destW / 2;
+                cPoint.y = destH;
+            break;
+            case SpriteCenterPoint::BOTTOM_RIGHT:
+                cPoint.x = destW;
+                cPoint.y = destH;
+            break;
+        }
+        SDL_RendererFlip fState = SDL_FLIP_NONE;
+
+        switch (flipState) {
+            case SpriteFlipState::Horizontal:
+                fState = SDL_FLIP_HORIZONTAL;
+                break;
+            case SpriteFlipState::Vertical:
+                fState = SDL_FLIP_VERTICAL;
+                break;        
+        }
+        const auto texturePtr = sprite->getTexture()->getRawPointer();
+        const auto alphaValue = alphaMax * (std::clamp(alphaPercentage, 0, 100) / 100);
+
+        SDL_SetTextureAlphaMod(texturePtr, alphaValue);
+
+        SDL_RenderCopyEx(
+            getRawPointer(),
+            texturePtr,
+            &source,
+            &dest,
+            rotation,
+            (centerPoint == SpriteCenterPoint::MIDDLE_CENTER  ? nullptr : &cPoint),
+            fState
+        );
+    }    
 
     void Renderer::drawLine(int x1, int y1, int x2, int y2) const noexcept
     {
@@ -143,19 +262,53 @@ namespace AcsGameEngine {
 
     Texture Renderer::makeTexture(const std::string & path, const Color &transparentColor) const
     {
-        SDL_Surface *tmp = IMG_Load(path.c_str());
+        SDL_Surface *tmpSurface = IMG_Load(path.c_str());
 
-        if (tmp == nullptr) {
-            throw std::invalid_argument{ std::string{ "Unable to load image: "} +path  };
+        if (tmpSurface == nullptr) {
+            throw std::invalid_argument{ std::string{ "Unable to load image: "} +path };
         }
 
         if (transparentColor != ColorList::_nocolor) {
-            SDL_SetColorKey(tmp, SDL_TRUE, SDL_MapRGB(tmp->format, transparentColor.r, transparentColor.g, transparentColor.b));
+            SDL_SetColorKey(tmpSurface, SDL_TRUE, SDL_MapRGB(tmpSurface->format, transparentColor.r, transparentColor.g, transparentColor.b));
         }
 
-        SDL_Texture *t = SDL_CreateTextureFromSurface(getRawPointer(), tmp);
-        SDL_FreeSurface(tmp);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(getRawPointer(), tmpSurface);
+        SDL_FreeSurface(tmpSurface);
 
-        return Texture{ t };
+        if (texture == nullptr) {
+            throw std::invalid_argument{ "Unable to generate texture from surface" };
+        }
+
+        return Texture{ texture };
+    }
+
+    //http://headerphile.com/sdl2/sdl2-part-10-text-rendering/
+    //http://headerphile.com/sdl2/sdl2-part-11-text-styling/
+    //@todo code to generate texture has parts of it duplicated. Try to move to one function
+    Texture Renderer::makeTexture(const Font& font, const std::string& text, const Color& color) const
+    {
+        SDL_Surface *tmpSurface = TTF_RenderText_Blended(
+            font.getRawPointer(),
+            text.c_str(),
+            SDL_Color{ 
+                static_cast<Uint8>(color.r), 
+                static_cast<Uint8>(color.g), 
+                static_cast<Uint8>(color.b), 
+                static_cast<Uint8>(color.a) 
+            }
+        );
+
+        if (tmpSurface == nullptr) {
+            throw std::invalid_argument{ "Unable to generate surface from font" };
+        }
+
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(getRawPointer(), tmpSurface);
+        SDL_FreeSurface(tmpSurface);
+
+        if (texture == nullptr) {
+            throw std::invalid_argument{"Unable to generate texture from surface"};
+        }
+
+        return Texture{ texture };
     }
 }

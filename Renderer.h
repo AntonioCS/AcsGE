@@ -1,22 +1,53 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 #include <memory>
 #include <string>
+#include "Util/ColorList.h"
+#include "Util/Vector2D.h"
+#include "Util/Size.h"
 
 namespace AcsGameEngine {
-
     class Window;
     class Texture;
     class Sprite;
+    class Sprite2;
+    class Font;
+    class SpriteDrawData;
 
     namespace Util {
+        namespace Shapes {
+            class Rectangle;
+        }
+
         class Color;
     }
 
     using Util::Color;
 
     class Renderer {
+    public:
+        enum class SpriteFlipState
+        {
+            None,
+            Horizontal,
+            Vertical
+        };
+
+        enum class SpriteCenterPoint
+        {
+            TOP_LEFT,
+            TOP_CENTER,
+            TOP_RIGHT,
+            MIDDLE_LEFT,
+            MIDDLE_CENTER,
+            MIDDLE_RIGHT,
+            BOTTOM_LEFT,
+            BOTTOM_CENTER,
+            BOTTOM_RIGHT
+        };
+
+
     public:
         explicit Renderer(Window& window, int index = -1, Uint32 flags = SDL_RENDERER_ACCELERATED);
         Renderer(const Renderer& orig) = delete;
@@ -41,9 +72,29 @@ namespace AcsGameEngine {
 
         void drawSprite(const Sprite *) const noexcept;
         void drawSprite(const Sprite &) const noexcept;
+        //void drawSprite(const SpriteDrawData &) const noexcept;
+        void drawSprite(
+            const Sprite2* sprite,            
+            const SpriteFlipState state = SpriteFlipState::None,
+            SpriteCenterPoint centerPoint = SpriteCenterPoint::MIDDLE_CENTER,
+            double rotation = 0,
+            int alphaPercentage = 100,
+            const Util::Size scale = { 1,1 }
+        ) const noexcept;
+        void drawSprite(
+            const Sprite2* sprite, 
+            const Util::Shapes::Rectangle& destination,
+            const SpriteFlipState state = SpriteFlipState::None, 
+            SpriteCenterPoint centerPoint = SpriteCenterPoint::MIDDLE_CENTER, 
+            double rotation = 0,
+            int alphaPercentage =  100, 
+            const Util::Size scale = { 1,1 }
+        ) const noexcept;
 
         Texture makeTexture(const std::string & path) const;
         Texture makeTexture(const std::string & path, const Color &transparentColor) const;
+        Texture makeTexture(const Font &font, const std::string &text, const Color &color) const;
+        //Texture makeTexture(const Font &font, const std::string &text, const Color &color, const Color &bkgColor) const;
 
         SDL_Renderer* getRawPointer() const noexcept;
         const Window& getWindow() const noexcept;
