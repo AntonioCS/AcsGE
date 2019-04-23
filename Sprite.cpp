@@ -71,20 +71,20 @@ namespace AcsGameEngine {
         m_destination.w = w;
         m_destination.h = h;
     }
-
+    /*
     void Sprite::setCenter()
     {
         m_destination.x = -1;
         m_destination.y = -1;
-    }
-
+    }*/
+    /*
     void Sprite::angle(double angle) {
         m_angle = angle;
     }
 
     double Sprite::angle() const noexcept {
         return m_angle;
-    }
+    }*/
     /*
     void Sprite::flip(SDL_RendererFlip state) {
         m_flip = state;
