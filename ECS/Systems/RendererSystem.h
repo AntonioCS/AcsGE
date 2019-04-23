@@ -19,6 +19,7 @@ namespace AcsGameEngine::ECS {
     public:
         void init() override;
         void update(std::chrono::milliseconds dt) override;
-        void render(Renderer &renderer) override;
+        //void render(Renderer &renderer) override;
+        void render() override;
 	};
 }

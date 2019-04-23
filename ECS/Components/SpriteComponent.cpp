@@ -6,6 +6,12 @@ namespace AcsGameEngine::ECS {
     SpriteComponent::SpriteComponent(Sprite *s) : m_sprite(s)
     {
     }
+
+    void SpriteComponent::update(Sprite* s)
+    {
+        m_sprite = s;
+    }
+
     Sprite *SpriteComponent::getSprite()
     {
         return m_sprite;

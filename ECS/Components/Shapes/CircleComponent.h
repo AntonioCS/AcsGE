@@ -6,7 +6,7 @@
 
 namespace AcsGameEngine::ECS {
 
-    class CircleComponent : public Component 
+    class CircleComponent : public Component
     {
     public:
         Util::Shapes::Circle circle{{100,200}, 20};

@@ -28,6 +28,43 @@ namespace AcsGameEngine::ECS {
             return ve;
         }
 
+        template<typename... Types>
+        std::vector<Entity *> findByComponent2() {
+            std::vector<Entity *> ve;
+
+            for (auto &e : m_entities) {
+                if (e.get()->template  hasComponents<Types...>()) {
+                    ve.push_back(&(*e));
+                }
+            }
+
+            return ve;
+        }
+
+        template<typename ComponentType>
+        Entity &findOneByComponent()
+        {
+            auto res = findByComponent<ComponentType>();
+
+            if (res.size() > 0) {
+                return res[0];
+            }
+
+            throw std::logic_error{ "Component not found" };
+        }
+
+        template<typename ComponentType>
+        Entity *findOneByComponent2()
+        {
+            auto res = findByComponent2<ComponentType>();
+
+            if (res.size() > 0) {
+                return res[0];
+            }
+
+            return nullptr;
+        }
+
     private:
         std::vector<std::unique_ptr<Entity>> m_entities;
     };

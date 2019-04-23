@@ -8,7 +8,6 @@
 #include "../../Util/Drawer.h"
 
 namespace AcsGameEngine::ECS {
-
     void RendererSystem::init()
     {
         m_vecRef = getEntityManager()->findByComponent<RenderableComponent>();
@@ -18,29 +17,30 @@ namespace AcsGameEngine::ECS {
     {
     }
 
-    void RendererSystem::render(Renderer &renderer)
+    ///void RendererSystem::render(Renderer &renderer)
+    void RendererSystem::render()
     {
         for (const auto ref : m_vecRef) {
             auto &e = ref.get();
-            auto state = e.getComponent<RenderableComponent>();
-
+            auto &state = e.getComponent<RenderableComponent>();
+            if (state.visible) {
+                
+            }
+            /*
             if (state.isVisible()) {
                 if (e.hasComponent<SpriteComponent>())
                 {
                     renderer.drawSprite(e.getComponent<SpriteComponent>().getSprite());
                 }
                 else {
-                    Util::Drawer drawer{renderer};
+                    Util::Drawer drawer{ renderer };
 
                     if (e.hasComponent<CircleComponent>())
                     {
                         CircleComponent &cicleComponent = e.getComponent<CircleComponent>();
-
-
-
                     }
                 }
-            }
+            }*/
         }
     }
 }

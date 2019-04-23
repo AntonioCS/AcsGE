@@ -23,7 +23,7 @@ namespace AcsGameEngine::ECS {
 
         template<typename T>
         ComponentId getComponentId() {
-            static_assert(std::is_base_of<Component, T>::value, "T must inherit from Component");
+            static_assert(std::is_base_of<Component, T>::value, "T must inherit from WorldComponent");
             static ComponentId id{ getUniqueComponentId() };
             return id;
         }
@@ -36,7 +36,8 @@ namespace AcsGameEngine::ECS {
 
             auto ComponentKey = getComponentId<T>();
 
-            m_components.insert(std::make_pair(ComponentKey, std::make_unique<T>(std::forward<TArgs>(mArgs)...)));
+            //m_components.insert(std::make_pair(ComponentKey, std::make_unique<T>(std::forward<TArgs>(mArgs)...)));
+            m_components.emplace(ComponentKey, std::make_unique<T>(std::forward<TArgs>(mArgs)...));
             m_components[ComponentKey]->parentEntity = this;
 
             return *static_cast<T*>(m_components[ComponentKey].get());

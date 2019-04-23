@@ -2,12 +2,8 @@
 #include <algorithm>
 #include <functional>
 
-#define LOOP_SYSTEMS(anonFunc) std::for_each( \
-                                std::begin(m_systems), \
-                                std::end(m_systems), \
-                                anonFunc \
-                            )
 namespace AcsGameEngine::ECS {
+
     void loopSystems(std::vector<std::unique_ptr<System>> &vec,
         std::function<void(std::unique_ptr<System> &system)> func)
     {
@@ -17,8 +13,7 @@ namespace AcsGameEngine::ECS {
             func
         );
     }
-}
-namespace AcsGameEngine::ECS {
+
     void SystemManager::init()
     {
         loopSystems(
@@ -27,7 +22,20 @@ namespace AcsGameEngine::ECS {
                 system->init();
             }
         );
+
+        m_isInit = true;
     }
+
+    void SystemManager::preUpdate(std::chrono::milliseconds ts)
+    {
+        loopSystems(
+            m_systems,
+            [&ts](std::unique_ptr<System> &system) {
+                system->preUpdate(ts);
+            }
+        );
+    }
+
 
     void SystemManager::update(std::chrono::milliseconds ts)
     {
@@ -40,6 +48,26 @@ namespace AcsGameEngine::ECS {
         );
     }
 
+    void SystemManager::postUpdate(std::chrono::milliseconds ts)
+    {
+        loopSystems(
+            m_systems,
+            [&ts](std::unique_ptr<System> &system) {
+                system->postUpdate(ts);
+            }
+        );
+    }
+
+    void SystemManager::preRender()
+    {
+        loopSystems(
+            m_systems,
+            [](std::unique_ptr<System> &system) {
+                system->preRender();
+            }
+        );
+    }
+
     void SystemManager::render()
     {
         loopSystems(
@@ -48,5 +76,28 @@ namespace AcsGameEngine::ECS {
                 system->render();
             }
         );
+    }
+
+    void SystemManager::postRender()
+    {
+        loopSystems(
+            m_systems,
+            [](std::unique_ptr<System> &system) {
+                system->preRender();
+            }
+        );
+    }
+
+    void SystemManager::setup(Renderer* r, Window* w, EntityManager* em, GameState *gs)
+    {
+        m_renderer = r;
+        m_window = w;
+        m_entityManager = em;
+        m_gameState = gs;
+    }
+
+    bool SystemManager::isInit() const noexcept
+    {
+        return m_isInit;
     }
 }
