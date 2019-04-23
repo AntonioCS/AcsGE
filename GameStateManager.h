@@ -3,6 +3,8 @@
 #include <memory>
 #include <unordered_map>
 #include <string>
+#include <type_traits>
+
 #include "GameState.h"
 
 namespace AcsGameEngine {    
@@ -14,29 +16,18 @@ namespace AcsGameEngine {
         GameStateManager(Game &game) : m_game(game) {}
         ~GameStateManager() = default;
 
-        void changeState(const std::string &stateName) {
-            if (m_states.find(stateName) != m_states.end())
-            {
-                m_currentState = m_states[stateName].get();
-            }
-            else {
-                throw std::invalid_argument("State does not exist");
-            }
-        }
-
-        void init();
+        //void init();
+        void changeState(const std::string& stateName);
+        void loadState(const std::string& stateName);
 
         template<typename GState, typename... GArgs>
-        GameStateManager *addState(std::string name, GArgs&& ...gargs) {
-            m_states.insert(
-                {
-                    name,
-                    std::make_unique<GState>(std::forward<GArgs>(gargs)...)
-                }
-            );
+        GameStateManager *addState(GArgs&& ...gargs) {
+            static_assert(std::is_base_of<GameState, GState>::value, "T must inherit from GameState");
 
-            m_currentState = &*(m_states[name]);
-            configureCurrentGameState();
+            auto newGameState = std::make_unique<GState>(std::forward<GArgs>(gargs)...);
+            auto name = newGameState->getName();
+
+            m_states.insert({name, std::move(newGameState)});
 
             return this;
         }
